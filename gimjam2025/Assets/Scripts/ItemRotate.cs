@@ -8,7 +8,7 @@ public class ItemRotate : MonoBehaviour
 {
     public float rotateSpeed = 50f;
     public float speed;
-    public float bounceTime;
+    public float bounceTime, rotateBounceTime;
     public (KeyCode, KeyCode) rotateLeftXKeybind = (KeyCode.A, KeyCode.D);
     public (KeyCode, KeyCode) rotateLeftYKeybind = (KeyCode.W, KeyCode.S);
     public KeyCode activateLeftKeybind = KeyCode.LeftShift;
@@ -48,102 +48,101 @@ public class ItemRotate : MonoBehaviour
     void RotateLeft()
     {
         if (!Input.GetKey(activateLeftKeybind) || itemLeft == null) return;
+        Vector3 rotate;
+        int x = 0, y = 0;
         if (Input.GetKey(rotateLeftXKeybind.Item1))
-        {
-            itemLeft.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, Space.World);
-        }
+            y = 1;
         else if (Input.GetKey(rotateLeftXKeybind.Item2))
-        {
-            itemLeft.transform.Rotate(Vector3.down * rotateSpeed * Time.deltaTime, Space.World);
-        }
+            y = -1;
         if (Input.GetKey(rotateLeftYKeybind.Item1))
-        {
-            itemLeft.transform.Rotate(Vector3.right * rotateSpeed * Time.deltaTime, Space.World);
-        }
+            x = 1;
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
+            x = -1;
+        rotate = new Vector3(x, y, 0);
+        if (x != 0 || y != 0)
         {
-            itemLeft.transform.Rotate(Vector3.left * rotateSpeed * Time.deltaTime, Space.World);
+            itemLeft.transform.DOLocalRotate(itemLeft.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
+        }
+    }
+    void RotateRight()
+    {
+        if (!Input.GetKey(activateRightKeybind) || itemRight == null) return;
+
+        Vector3 rotate;
+        int x = 0, y = 0;
+        if (Input.GetKey(rotateRightXKeybind.Item1))
+            y = 1;
+        else if (Input.GetKey(rotateRightXKeybind.Item2))
+            y = -1;
+        if (Input.GetKey(rotateRightYKeybind.Item1))
+            x = 1;
+        else if (Input.GetKey(rotateRightYKeybind.Item2))
+            x = -1;
+        rotate = new Vector3(x, y, 0);
+        if (x != 0 || y != 0)
+        {
+            itemRight.transform.DOLocalRotate(itemRight.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
         }
     }
     void MoveLeft()
     {
         if (Input.GetKey(activateLeftKeybind) || rigidLeft == null) return;
-            Vector3 move;
-            int x = 0;
-            int z = 0;
-            if (Input.GetKey(rotateLeftXKeybind.Item1))
-            {
-                x = -1;
-                //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation); 
-            }
-            else if (Input.GetKey(rotateLeftXKeybind.Item2))
-            {
-                x = 1;
-                //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
-            }
-            if (Input.GetKey(rotateLeftYKeybind.Item1))
-            {
-                z = 1;
-                //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
-            }
-            else if (Input.GetKey(rotateLeftYKeybind.Item2))
-            {
-                z = -1;
-                //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
-            }
-            move = new Vector3(x,0,z);
-            if (x != 0 || z != 0)
-            {
-                itemLeft.transform.DOLocalMove(itemLeft.transform.position + (move.normalized * speed * Time.deltaTime),bounceTime).SetEase(Ease.OutElastic);
-            }
-    }
-    void RotateRight()
-    {
-        if (!Input.GetKey(activateRightKeybind) || itemRight == null) return;
-        if (Input.GetKey(rotateRightXKeybind.Item1))
+        Vector3 move;
+        int x = 0;
+        int z = 0;
+        if (Input.GetKey(rotateLeftXKeybind.Item1))
         {
-            itemRight.transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime, Space.World);
+            x = -1;
+            //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation); 
         }
-        else if (Input.GetKey(rotateRightXKeybind.Item2))
+        else if (Input.GetKey(rotateLeftXKeybind.Item2))
         {
-            itemRight.transform.Rotate(Vector3.down * rotateSpeed * Time.deltaTime, Space.World);
+            x = 1;
+            //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
-        if (Input.GetKey(rotateRightYKeybind.Item1))
+        if (Input.GetKey(rotateLeftYKeybind.Item1))
         {
-            itemRight.transform.Rotate(Vector3.right * rotateSpeed * Time.deltaTime, Space.World);
+            z = 1;
+            //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
-        else if (Input.GetKey(rotateRightYKeybind.Item2))
+        else if (Input.GetKey(rotateLeftYKeybind.Item2))
         {
-            itemRight.transform.Rotate(Vector3.left * rotateSpeed * Time.deltaTime, Space.World);
+            z = -1;
+            //rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
+        }
+        move = new Vector3(x, 0, z);
+        if (x != 0 || z != 0)
+        {
+            itemLeft.transform.DOLocalMove(itemLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
         }
     }
     void MoveRight()
     {
         if (Input.GetKey(activateRightKeybind) || itemRight == null) return;
-            Vector3 move;
-            int x = 0;
-            int z = 0;
-            if (Input.GetKey(rotateRightXKeybind.Item1))
-            {
-                x = -1;
-            }
-            else if (Input.GetKey(rotateRightXKeybind.Item2))
-            {
-                x = 1;
-            }
-            if (Input.GetKey(rotateRightYKeybind.Item1))
-            {
-                z = 1;
-            }
-            else if (Input.GetKey(rotateRightYKeybind.Item2))
-            {
-                z = -1;
-            }
-            move = new Vector3(x,0,z);
-            if (x != 0 || z != 0)
-            {
-                itemRight.transform.DOLocalMove(itemRight.transform.position + (move.normalized * speed * Time.deltaTime),bounceTime).SetEase(Ease.OutElastic);
-            }
+        Vector3 move;
+        int x = 0;
+        int z = 0;
+        if (Input.GetKey(rotateRightXKeybind.Item1))
+        {
+            x = -1;
         }
+        else if (Input.GetKey(rotateRightXKeybind.Item2))
+        {
+            x = 1;
+        }
+        if (Input.GetKey(rotateRightYKeybind.Item1))
+        {
+            z = 1;
+        }
+        else if (Input.GetKey(rotateRightYKeybind.Item2))
+        {
+            z = -1;
+        }
+        move = new Vector3(x, 0, z);
+        if (x != 0 || z != 0)
+        {
+            itemRight.transform.DOLocalMove(itemRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+        }
+    }
 }
 
