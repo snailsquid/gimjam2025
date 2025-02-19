@@ -16,17 +16,17 @@ public class ItemRotate : MonoBehaviour
     public (KeyCode, KeyCode) rotateRightYKeybind = (KeyCode.I, KeyCode.K);
     public KeyCode activateRightKeybind = KeyCode.Slash;
     public Color active, inactive;
-    public GameObject itemLeft, itemRight;
-    public Rigidbody rigidLeft, rigidRight;
+    private Transform itemLeft, itemRight;
     public Image leftImage, rightImage;
+    public Hand handLeft, handRight;
     public bool debug = false;
     void Start()
     {
-        rigidLeft.constraints = RigidbodyConstraints.FreezePositionY;
-        rigidRight.constraints = RigidbodyConstraints.FreezePositionY;
     }
     void FixedUpdate()
     {
+        itemLeft = handLeft.heldItem;
+        itemRight = handRight.heldItem;
         RotateLeft();
         MoveLeft();
         RotateRight();
@@ -61,7 +61,7 @@ public class ItemRotate : MonoBehaviour
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
         {
-            itemLeft.transform.DOLocalRotate(itemLeft.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
+            itemLeft.transform.DORotate(itemLeft.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
         }
     }
     void RotateRight()
@@ -81,12 +81,12 @@ public class ItemRotate : MonoBehaviour
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
         {
-            itemRight.transform.DOLocalRotate(itemRight.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
+            itemRight.transform.DORotate(itemRight.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
         }
     }
     void MoveLeft()
     {
-        if (Input.GetKey(activateLeftKeybind) || rigidLeft == null) return;
+        if (Input.GetKey(activateLeftKeybind) || handLeft == null) return;
         Vector3 move;
         int x = 0;
         int z = 0;
@@ -113,12 +113,12 @@ public class ItemRotate : MonoBehaviour
         move = new Vector3(x, 0, z);
         if (x != 0 || z != 0)
         {
-            itemLeft.transform.DOLocalMove(itemLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handLeft.transform.DOLocalMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
         }
     }
     void MoveRight()
     {
-        if (Input.GetKey(activateRightKeybind) || itemRight == null) return;
+        if (Input.GetKey(activateRightKeybind) || handRight == null) return;
         Vector3 move;
         int x = 0;
         int z = 0;
@@ -141,7 +141,7 @@ public class ItemRotate : MonoBehaviour
         move = new Vector3(x, 0, z);
         if (x != 0 || z != 0)
         {
-            itemRight.transform.DOLocalMove(itemRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handRight.transform.DOLocalMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
         }
     }
 }

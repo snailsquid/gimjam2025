@@ -12,6 +12,8 @@ public class Holdable : MonoBehaviour
         rigidBody.isKinematic = false;
         rigidBody.drag = 200;
         rigidBody.angularDrag = 200;
+        rigidBody.constraints = RigidbodyConstraints.FreezePositionY;
+        gameObject.tag = "Holdable";
     }
     // void OnCollisionEnter(Collision collision)
     // {
