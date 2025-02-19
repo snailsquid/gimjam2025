@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class DialogueBoxScript : MonoBehaviour
 {
     [SerializeField] private CanvasGroup PopUp;
-    [SerializeField] float hideTime = 5;
+    [SerializeField] float showTime = 5;
 
     public float fadeTime;
     public float fadeAwayPersecond;
@@ -25,15 +25,15 @@ public class DialogueBoxScript : MonoBehaviour
     {
         ManageTime.PauseTime();
         StartCoroutine(WaitCoroutine());
-        ManageTime.StartTime();
     }
     IEnumerator WaitCoroutine()
     {
         fadeIn = true;
         yield return new WaitForSeconds(fadeTime);
-        yield return new WaitForSeconds(hideTime);
+        yield return new WaitForSeconds(showTime);
         yield return new WaitForSeconds(fadeTime);
         fadeOut = true;
+        ManageTime.StartTime();
     }
 
     void Update()
