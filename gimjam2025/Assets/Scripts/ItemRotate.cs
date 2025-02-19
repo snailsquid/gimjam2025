@@ -17,7 +17,7 @@ public class ItemRotate : MonoBehaviour
     public Image leftImage, rightImage;
     public bool debug = false;
 
-    void Update()
+    void FixedUpdate()
     {
         RotateLeft();
         RotateRight();

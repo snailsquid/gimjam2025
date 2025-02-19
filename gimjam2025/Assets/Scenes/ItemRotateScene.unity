@@ -574,6 +574,7 @@ GameObject:
   - component: {fileID: 1441501585}
   - component: {fileID: 1441501584}
   - component: {fileID: 1441501588}
+  - component: {fileID: 1441501589}
   m_Layer: 0
   m_Name: CubeLeft
   m_TagString: Untagged
@@ -676,8 +677,8 @@ Rigidbody:
   m_GameObject: {fileID: 1441501583}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 200
+  m_AngularDrag: 200
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -694,6 +695,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1441501589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441501583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e48ccd5fc9cd924aa5774c08d5cd7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1529321253
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +874,7 @@ GameObject:
   - component: {fileID: 2039269443}
   - component: {fileID: 2039269442}
   - component: {fileID: 2039269446}
+  - component: {fileID: 2039269447}
   m_Layer: 0
   m_Name: CubeRight
   m_TagString: Untagged
@@ -963,8 +977,8 @@ Rigidbody:
   m_GameObject: {fileID: 2039269441}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 200
+  m_AngularDrag: 200
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -981,6 +995,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2039269447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039269441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e48ccd5fc9cd924aa5774c08d5cd7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
