@@ -27,6 +27,7 @@ public class ItemRotate : MonoBehaviour
     }
     void FixedUpdate()
     {
+        //Debug.Log(itemLeft.transform.rotation.eulerAngles);
         RotateLeft();
         MoveLeft();
         RotateRight();
@@ -55,19 +56,37 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateLeftXKeybind.Item2))
             y = -1;
         if (Input.GetKey(rotateLeftYKeybind.Item1))
-            x = 1;
+        {
+            //Debug.Log(itemLeft.transform.rotation);
+            if((itemLeft.transform.rotation.eulerAngles.x<90 && itemLeft.transform.rotation.eulerAngles.z<180) || (itemLeft.transform.rotation.eulerAngles.x>270 && itemLeft.transform.rotation.eulerAngles.z<180))
+            {
+                x = 1;
+            }
+            else
+            {
+                x = -1;
+            }
+        }  
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
-            x = -1;
+        {
+            if((itemLeft.transform.rotation.eulerAngles.x<90 && itemLeft.transform.rotation.eulerAngles.z<180) || (itemLeft.transform.rotation.eulerAngles.x>270 && itemLeft.transform.rotation.eulerAngles.z<180))
+            {
+                x = -1;
+            }
+            else
+            {
+                x = 1;
+            }
+        }
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
         {
-            itemLeft.transform.DOLocalRotate(itemLeft.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
+            itemLeft.transform.DORotate(itemLeft.transform.rotation.eulerAngles + rotate * rotateSpeed * Time.deltaTime, rotateBounceTime).SetEase(Ease.OutElastic);
         }
     }
     void RotateRight()
     {
         if (!Input.GetKey(activateRightKeybind) || itemRight == null) return;
-
         Vector3 rotate;
         int x = 0, y = 0;
         if (Input.GetKey(rotateRightXKeybind.Item1))
@@ -75,9 +94,27 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateRightXKeybind.Item2))
             y = -1;
         if (Input.GetKey(rotateRightYKeybind.Item1))
-            x = 1;
+        {
+            if((itemRight.transform.rotation.eulerAngles.x<90 && itemRight.transform.rotation.eulerAngles.z<180) || (itemRight.transform.rotation.eulerAngles.x>270 && itemRight.transform.rotation.eulerAngles.z<180))
+            {
+                x = 1;
+            }
+            else
+            {
+                x = -1;
+            }
+        }
         else if (Input.GetKey(rotateRightYKeybind.Item2))
-            x = -1;
+        {
+            if((itemRight.transform.rotation.eulerAngles.x<90 && itemRight.transform.rotation.eulerAngles.z<180) || (itemRight.transform.rotation.eulerAngles.x>270 && itemRight.transform.rotation.eulerAngles.z<180))
+            {
+                x = -1;
+            }
+            else
+            {
+                x = 1;
+            }
+        }
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
         {
