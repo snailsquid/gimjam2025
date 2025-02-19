@@ -784,12 +784,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 50
+  speed: 5
   activateLeftKeybind: 304
   activateRightKeybind: 47
   active: {r: 0, g: 1, b: 0.008930683, a: 1}
   inactive: {r: 1, g: 0, b: 0, a: 1}
   itemLeft: {fileID: 1441501583}
   itemRight: {fileID: 2039269441}
+  rigidLeft: {fileID: 1441501588}
+  rigidRight: {fileID: 2039269446}
   leftImage: {fileID: 28801911}
   rightImage: {fileID: 455511114}
   debug: 1
