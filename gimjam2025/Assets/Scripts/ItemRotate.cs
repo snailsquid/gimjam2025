@@ -65,22 +65,22 @@ public class ItemRotate : MonoBehaviour
         if (Input.GetKey(rotateLeftXKeybind.Item1))
         {
             Vector3 move = new Vector3(-1,0,0);
-            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
         else if (Input.GetKey(rotateLeftXKeybind.Item2))
         {
             Vector3 move = new Vector3(1,0,0);
-            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
         if (Input.GetKey(rotateLeftYKeybind.Item1))
         {
             Vector3 move = new Vector3(0,0,1);
-            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
         {
             Vector3 move = new Vector3(0,0,-1);
-            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidLeft.Move(itemLeft.transform.position + (move * speed * Time.deltaTime),itemLeft.transform.rotation);
         }
     }
     void RotateRight()
@@ -109,22 +109,22 @@ public class ItemRotate : MonoBehaviour
         if (Input.GetKey(rotateRightXKeybind.Item1))
         {
             Vector3 move = new Vector3(-1,0,0);
-            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),itemRight.transform.rotation);
         }
         else if (Input.GetKey(rotateRightXKeybind.Item2))
         {
             Vector3 move = new Vector3(1,0,0);
-            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),itemRight.transform.rotation);
         }
         if (Input.GetKey(rotateRightYKeybind.Item1))
         {
             Vector3 move = new Vector3(0,0,1);
-            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),itemRight.transform.rotation);
         }
         else if (Input.GetKey(rotateRightYKeybind.Item2))
         {
             Vector3 move = new Vector3(0,0,-1);
-            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),transform.rotation);
+            rigidRight.Move(itemRight.transform.position + (move * speed * Time.deltaTime),itemRight.transform.rotation);
         }
     }
 }
