@@ -25,6 +25,7 @@ public class DialogueBoxScript : MonoBehaviour
     {
         ManageTime.PauseTime();
         StartCoroutine(WaitCoroutine());
+        ManageTime.StartTime();
     }
     IEnumerator WaitCoroutine()
     {
