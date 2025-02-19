@@ -1,0 +1,148 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ItemGenerator : MonoBehaviour
+{
+    public class ConveyorTracker
+    {
+        public Transform spawnPoint;
+        public List<GameObject> items = new List<GameObject>();
+        public int maxItems = 2;
+        public float itemSpacing = 2f;
+    }
+    private List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
+    public static ItemGenerator instance { get; private set; }
+    public GameObject[] spawnPoints;
+    public GameObject[] itemPrefabs;
+    public float spawnInterval = 2.0f;
+    private float timer;
+    private bool isInitialized;
+
+    public void InitializeSpawnPoints(Transform leftSpawn, Transform rightSpawn)
+    {
+        conveyorTrackers.Clear();
+
+        conveyorTrackers.Add(new ConveyorTracker
+        {
+            spawnPoint = leftSpawn,
+            maxItems = 2,
+            itemSpacing = 2f
+        });
+
+        conveyorTrackers.Add(new ConveyorTracker
+        {
+            spawnPoint = rightSpawn,
+            maxItems = 2,
+            itemSpacing = 2f
+        });
+
+        isInitialized = true;
+    }
+
+    private void Awake()
+    {
+        if (instance != null & instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
+
+    private void Update()
+    {
+        if (!isInitialized) return;
+
+        timer += Time.deltaTime;
+        if (timer >= spawnInterval)
+        {
+            TrySpawnItem();
+            timer = 0f;
+        }
+        // UpdateItemPosition();
+    }
+
+    private void TrySpawnItem()
+    {
+        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+        {
+            conveyorTracker.items.RemoveAll(item => item == null);
+            if (conveyorTracker.items.Count < conveyorTracker.maxItems)
+            {
+                bool canSpawn = true;
+
+                if (conveyorTracker.items.Count > 0 && conveyorTracker.items[conveyorTracker.items.Count - 1] != null)
+                {
+                    float distanceFromLast = Mathf.Abs(
+                        conveyorTracker.items[conveyorTracker.items.Count - 1].transform.position.x - conveyorTracker.spawnPoint.position.x
+                    );
+
+                    if (distanceFromLast < conveyorTracker.itemSpacing)
+                    {
+                        canSpawn = false;
+                    }
+                }
+                if (canSpawn)
+                {
+                    SpawnItem(conveyorTracker);
+                }
+            }
+        }
+    }
+    private void SpawnItem(ConveyorTracker conveyorTracker)
+    {
+        // Random item selection
+        GameObject prefabToSpawn = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
+
+        // Randomly choose left or right spawn point
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform;
+
+        // Spawn position with fixed height
+        Vector3 spawnPosition = new Vector3(
+            conveyorTracker.spawnPoint.position.x,
+            conveyorTracker.spawnPoint.position.y,
+            conveyorTracker.spawnPoint.position.z
+        );
+
+        GameObject newItem = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+        conveyorTracker.items.Add(newItem);
+
+        // Add ItemController component
+        ItemController itemController = newItem.AddComponent<ItemController>();
+        bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
+        itemController.Initialize(isMovingRight);
+    }
+
+    // private void UpdateItemPosition()
+    // {
+    //     foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+    //     {
+    //         for (int i = 0; i < conveyorTracker.items.Count; i++)
+    //         {
+    //             if (conveyorTracker.items[i] == null) continue;
+
+    //             ItemController itemController = conveyorTracker.items[i].GetComponent<ItemController>();
+    //             if (itemController != null)
+    //             {
+    //                 // Calculate target position based on item index and conveyor direction
+    //                 bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
+    //                 float baseX = conveyorTracker.spawnPoint.position.x;
+    //                 float targetX;
+
+    //                 if (isMovingRight)
+    //                 {
+    //                     targetX = baseX + (i * conveyorTracker.itemSpacing);
+    //                 }
+    //                 else
+    //                 {
+    //                     targetX = baseX - (i * conveyorTracker.itemSpacing);
+    //                 }
+
+    //                 itemController.SetTargetPosition(targetX);
+    //             }
+    //         }
+    //     }
+    // }
+}
