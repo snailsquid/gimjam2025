@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ItemGenerator : MonoBehaviour
@@ -61,7 +62,6 @@ public class ItemGenerator : MonoBehaviour
             TrySpawnItem();
             timer = 0f;
         }
-        // UpdateItemPosition();
     }
 
     private void TrySpawnItem()
@@ -96,9 +96,6 @@ public class ItemGenerator : MonoBehaviour
         // Random item selection
         GameObject prefabToSpawn = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
 
-        // Randomly choose left or right spawn point
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)].transform;
-
         // Spawn position with fixed height
         Vector3 spawnPosition = new Vector3(
             conveyorTracker.spawnPoint.position.x,
@@ -109,40 +106,19 @@ public class ItemGenerator : MonoBehaviour
         GameObject newItem = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
         conveyorTracker.items.Add(newItem);
 
+        // Set tag to Holdable to the first item on the conveyor
+        if (conveyorTracker.items.Count == 0)
+        {
+            newItem.tag = "Holdable";
+        }
+        else
+        {
+            conveyorTracker.items[0].tag = "Holdable";
+        }
+
         // Add ItemController component
         ItemController itemController = newItem.AddComponent<ItemController>();
         bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
         itemController.Initialize(isMovingRight);
     }
-
-    // private void UpdateItemPosition()
-    // {
-    //     foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
-    //     {
-    //         for (int i = 0; i < conveyorTracker.items.Count; i++)
-    //         {
-    //             if (conveyorTracker.items[i] == null) continue;
-
-    //             ItemController itemController = conveyorTracker.items[i].GetComponent<ItemController>();
-    //             if (itemController != null)
-    //             {
-    //                 // Calculate target position based on item index and conveyor direction
-    //                 bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
-    //                 float baseX = conveyorTracker.spawnPoint.position.x;
-    //                 float targetX;
-
-    //                 if (isMovingRight)
-    //                 {
-    //                     targetX = baseX + (i * conveyorTracker.itemSpacing);
-    //                 }
-    //                 else
-    //                 {
-    //                     targetX = baseX - (i * conveyorTracker.itemSpacing);
-    //                 }
-
-    //                 itemController.SetTargetPosition(targetX);
-    //             }
-    //         }
-    //     }
-    // }
 }

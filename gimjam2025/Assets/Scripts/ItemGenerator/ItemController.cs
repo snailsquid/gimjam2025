@@ -9,20 +9,17 @@ public class ItemController : MonoBehaviour
     private const float STOP_THRESHOLD = 1.5f;
     private bool shouldMove = true;
     private Rigidbody rb;
+    private bool conveyorTracker;
+
 
     public void Initialize(bool moveRight)
     {
         movingRight = moveRight;
 
         rb = gameObject.AddComponent<Rigidbody>();
-        rb.useGravity = false;
+        rb.useGravity = true;
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
     }
-
-    // public void SetTargetPosition(float newTargetX)
-    // {
-    //     targetX = newTargetX;
-    // }
 
     private void OnCollisionStay(Collision collision)
     {
@@ -37,7 +34,7 @@ public class ItemController : MonoBehaviour
         float currentX = rb.position.x;
         float distanceToTarget = Mathf.Abs(currentX - targetX);
 
-        if (distanceToTarget > STOP_THRESHOLD)
+        if (distanceToTarget > STOP_THRESHOLD || conveyorTracker )
         {
             if (movingRight)
             {
