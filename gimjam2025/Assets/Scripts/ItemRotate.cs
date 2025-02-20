@@ -19,8 +19,7 @@ public class ItemRotate : MonoBehaviour
     private Transform itemLeft, itemRight;
     public Image leftImage, rightImage;
     public Hand handLeft, handRight;
-    public Transform leftMin, leftMax;
-    public Transform rightMin, rightMax;
+    public Transform handMin, handMax;
     public Transform handTransformLeft, handTransformRight;
     public bool debug = false;
     void Start()
@@ -97,24 +96,24 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if(handLeft.transform.position.x < leftMin.transform.position.x)
+        if(handLeft.transform.position.x < handMin.transform.position.x)
         {
-            Vector3 pos = new Vector3(leftMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            Vector3 pos = new Vector3(handMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.x > leftMax.transform.position.x)
+        else if(handLeft.transform.position.x > handMax.transform.position.x)
         {
-            Vector3 pos = new Vector3(leftMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            Vector3 pos = new Vector3(handMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.z < leftMin.transform.position.z)
+        else if(handLeft.transform.position.z < handMin.transform.position.z)
         {
-            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, leftMin.transform.position.z);
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMin.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.z > leftMax.transform.position.z)
+        else if(handLeft.transform.position.z > handMax.transform.position.z)
         {
-            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, leftMax.transform.position.z);
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMax.transform.position.z);
             handLeft.transform.position = pos;
         }
         else
@@ -142,24 +141,24 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateRightYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if(handRight.transform.position.x < rightMin.transform.position.x)
+        if(handRight.transform.position.x < handMin.transform.position.x)
         {
-            Vector3 pos = new Vector3(rightMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            Vector3 pos = new Vector3(handMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.x > rightMax.transform.position.x)
+        else if(handRight.transform.position.x > handMax.transform.position.x)
         {
-            Vector3 pos = new Vector3(rightMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            Vector3 pos = new Vector3(handMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.z < rightMin.transform.position.z)
+        else if(handRight.transform.position.z < handMin.transform.position.z)
         {
-            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, rightMin.transform.position.z);
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMin.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.z > rightMax.transform.position.z)
+        else if(handRight.transform.position.z > handMax.transform.position.z)
         {
-            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, rightMax.transform.position.z);
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMax.transform.position.z);
             handRight.transform.position = pos;
         }
         else
