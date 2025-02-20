@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,13 +10,13 @@ public class ItemGenerator : MonoBehaviour
         public Transform spawnPoint;
         public List<GameObject> items = new List<GameObject>();
         public int maxItems = 2;
-        public float itemSpacing = 2f;
+        public float itemSpacing = 1f;
     }
     public List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
     public static ItemGenerator instance { get; private set; }
     public GameObject[] spawnPoints;
     public GameObject[] itemPrefabs;
-    public float spawnInterval = 2.0f;
+    public float spawnInterval = 1f;
     private float timer;
     private bool isInitialized;
 
@@ -27,14 +28,14 @@ public class ItemGenerator : MonoBehaviour
         {
             spawnPoint = leftSpawn,
             maxItems = 2,
-            itemSpacing = 2f
+            itemSpacing = 1f
         });
 
         conveyorTrackers.Add(new ConveyorTracker
         {
             spawnPoint = rightSpawn,
             maxItems = 2,
-            itemSpacing = 2f
+            itemSpacing = 1f
         });
 
         isInitialized = true;
@@ -119,6 +120,7 @@ public class ItemGenerator : MonoBehaviour
         // Add ItemController component
         ItemController itemController = newItem.AddComponent<ItemController>();
         bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
+    
         itemController.Initialize(isMovingRight);
     }
 }

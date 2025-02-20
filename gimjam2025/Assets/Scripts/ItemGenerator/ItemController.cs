@@ -5,11 +5,11 @@ using static ItemGenerator;
 
 public class ItemController : MonoBehaviour
 {
-    private float speed = 5f;
+    private float speed = 1f;
     private bool movingRight;
     private float targetX = 0.0f;
     private const float STOP_THRESHOLD = 1.5f;
-    private bool shouldMove = true;
+    private bool onConveyor = true;
     private Rigidbody rb;
     private List<ConveyorTracker> conveyorTrackers;
 
@@ -24,45 +24,43 @@ public class ItemController : MonoBehaviour
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+        rb.mass *= 5;
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
     }
 
-    private void OnCollisionStay(Collision collision)
+    public void OnCollisionExit(Collision collision)
     {
-        shouldMove = false;
-        rb.velocity = Vector3.zero;
+        if (collision.gameObject.tag == "Conveyor")
+        {
+            print("Collision Exit Conveyor");
+            onConveyor = false;
+            rb.velocity = new Vector3(rb.velocity.x * .75f, -speed, 0);
+        }
     }
 
     private void FixedUpdate()
     {
-        if (!shouldMove) return;
-
-        float currentX = rb.position.x;
-        float distanceToTarget = Mathf.Abs(currentX - targetX);
-
-        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+        if (onConveyor)
         {
-            if (distanceToTarget > STOP_THRESHOLD)
-            {
 
+            float currentX = rb.position.x;
+
+            foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+            {
                 if (movingRight)
                 {
                     if (currentX < targetX)
                     {
-                        rb.AddForce(Vector3.right * speed);
+                        rb.velocity = Vector3.right * speed;
                     }
                 }
                 else
                 {
                     if (currentX > targetX)
                     {
-                        rb.AddForce(Vector3.left * speed);
+                        rb.velocity = Vector3.left * speed;
                     }
                 }
-            }
-            else
-            {
-                rb.velocity = Vector3.zero;
             }
         }
     }

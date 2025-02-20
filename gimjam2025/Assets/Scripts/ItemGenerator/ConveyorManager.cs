@@ -36,13 +36,14 @@ public class ConveyorSetup : MonoBehaviour
         GameObject conveyor = Instantiate(conveyorPrefab);
         conveyor.name = name;
         conveyor.transform.position = position;
-
+        conveyor.tag = "Conveyor";
+        
         // Create spawn point
         GameObject spawnPoint = new GameObject(name + "SpawnPoint");
         spawnPoint.transform.parent = conveyor.transform;
         spawnPoint.transform.position = new Vector3(
             isLeft ? position.x - 1 : position.x + 1,
-            position.y + 0.5f,
+            position.y + .25f,
             position.z
         );
 
