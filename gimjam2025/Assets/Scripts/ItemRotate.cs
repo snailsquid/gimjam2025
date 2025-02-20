@@ -16,17 +16,19 @@ public class ItemRotate : MonoBehaviour
     public (KeyCode, KeyCode) rotateRightYKeybind = (KeyCode.I, KeyCode.K);
     public KeyCode activateRightKeybind = KeyCode.Slash;
     public Color active, inactive;
-    public GameObject itemLeft, itemRight;
-    public Rigidbody rigidLeft, rigidRight;
+    private Transform itemLeft, itemRight;
     public Image leftImage, rightImage;
+    public Hand handLeft, handRight;
+    public Transform handMin, handMax;
+    public Transform handTransformLeft, handTransformRight;
     public bool debug = false;
     void Start()
     {
-        rigidLeft.constraints = RigidbodyConstraints.FreezePositionY;
-        rigidRight.constraints = RigidbodyConstraints.FreezePositionY;
     }
     void FixedUpdate()
     {
+        itemLeft = handLeft.heldItem;
+        itemRight = handRight.heldItem;
         RotateLeft();
         MoveLeft();
         RotateRight();
@@ -81,7 +83,7 @@ public class ItemRotate : MonoBehaviour
     }
     void MoveLeft()
     {
-        if (Input.GetKey(activateLeftKeybind) || rigidLeft == null) return;
+        if (Input.GetKey(activateLeftKeybind) || handLeft == null) return;
         Vector3 move;
         int x = 0;
         int z = 0;
@@ -94,12 +96,39 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if (x != 0 || z != 0)
-            itemLeft.transform.DOLocalMove(itemLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+        if(handLeft.transform.position.x < handMin.transform.position.x)
+        {
+            Vector3 pos = new Vector3(handMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.x > handMax.transform.position.x)
+        {
+            Vector3 pos = new Vector3(handMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.z < handMin.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMin.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.z > handMax.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMax.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else
+        {
+            if (x != 0 || z != 0)
+            {
+            handTransformLeft.transform.DOMove(handTransformLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handLeft.transform.DOMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            }
+        }
+
     }
     void MoveRight()
     {
-        if (Input.GetKey(activateRightKeybind) || itemRight == null) return;
+        if (Input.GetKey(activateRightKeybind) || handRight == null) return;
         Vector3 move;
         int x = 0;
         int z = 0;
@@ -112,8 +141,35 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateRightYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if (x != 0 || z != 0)
-            itemRight.transform.DOLocalMove(itemRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+        if(handRight.transform.position.x < handMin.transform.position.x)
+        {
+            Vector3 pos = new Vector3(handMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.x > handMax.transform.position.x)
+        {
+            Vector3 pos = new Vector3(handMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.z < handMin.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMin.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.z > handMax.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMax.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else
+        {
+            if (x != 0 || z != 0)
+            {
+            handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            }
+        }
+        
     }
 }
 
