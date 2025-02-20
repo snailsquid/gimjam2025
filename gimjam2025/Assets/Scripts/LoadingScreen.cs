@@ -6,18 +6,40 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScreen : MonoBehaviour
 {
+    
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject loadingSlider;
+    [SerializeField] private Slider loadingSlider;
+    [SerializeField] private float loadingTime;
+    private bool isLoading;
+    private string scene;
 
     public void LoadLevelBtn(string levelToLoad)
     {
         mainMenu.SetActive(false);
         loadingScreen.SetActive(true);
 
-        StartCoroutine(LoadLevelAsync(levelToLoad));
+        scene = levelToLoad;
+        isLoading = true;
+        
+        //LoadLevelAsync(levelToLoad);
     }
 
+    void Update()
+    {
+        if (isLoading)
+        {
+            if (loadingSlider.value != loadingSlider.maxValue)
+            {
+                loadingSlider.value += Time.deltaTime/loadingTime;
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync(scene);
+            }
+        }
+    }
+    /*
     IEnumerator LoadLevelAsync(string levelToLoad)
     {
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
@@ -28,4 +50,5 @@ public class LoadingScreen : MonoBehaviour
             yield return null;
         }
     }
+    */
 }
