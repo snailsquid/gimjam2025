@@ -141,7 +141,7 @@ public class ItemRotate : MonoBehaviour
         move = new Vector3(x, 0, z);
         if (x != 0 || z != 0)
         {
-            handRight.transform.DOLocalMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
         }
     }
 }
