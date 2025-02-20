@@ -19,6 +19,8 @@ public class ItemRotate : MonoBehaviour
     private Transform itemLeft, itemRight;
     public Image leftImage, rightImage;
     public Hand handLeft, handRight;
+    public Transform leftMin, leftMax;
+    public Transform rightMin, rightMax;
     public Transform handTransformLeft, handTransformRight;
     public bool debug = false;
     void Start()
@@ -95,8 +97,35 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if (x != 0 || z != 0)
-            handLeft.transform.DOLocalMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+        if(handLeft.transform.position.x < leftMin.transform.position.x)
+        {
+            Vector3 pos = new Vector3(leftMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.x > leftMax.transform.position.x)
+        {
+            Vector3 pos = new Vector3(leftMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.z < leftMin.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, leftMin.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else if(handLeft.transform.position.z > leftMax.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, leftMax.transform.position.z);
+            handLeft.transform.position = pos;
+        }
+        else
+        {
+            if (x != 0 || z != 0)
+            {
+            handTransformLeft.transform.DOMove(handTransformLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handLeft.transform.DOMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            }
+        }
+
     }
     void MoveRight()
     {
@@ -113,8 +142,35 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateRightYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if (x != 0 || z != 0)
-            handRight.transform.DOLocalMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+        if(handRight.transform.position.x < rightMin.transform.position.x)
+        {
+            Vector3 pos = new Vector3(rightMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.x > rightMax.transform.position.x)
+        {
+            Vector3 pos = new Vector3(rightMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.z < rightMin.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, rightMin.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else if(handRight.transform.position.z > rightMax.transform.position.z)
+        {
+            Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, rightMax.transform.position.z);
+            handRight.transform.position = pos;
+        }
+        else
+        {
+            if (x != 0 || z != 0)
+            {
+            handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), bounceTime).SetEase(Ease.OutElastic);
+            }
+        }
+        
     }
 }
 

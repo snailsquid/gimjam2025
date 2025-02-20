@@ -6,6 +6,7 @@ public class Hand : MonoBehaviour
 {
     Rigidbody rigidBody;
     public Transform heldItem { get; private set; }
+    public Transform hb;
     Transform holdableItem;
     [SerializeField] KeyCode holdKey = KeyCode.E;
     bool isHoldable = false;
@@ -19,6 +20,7 @@ public class Hand : MonoBehaviour
         Debug.Log(hitTransform.tag);
         if (hitTransform.CompareTag("Holdable"))
         {
+            Debug.Log("Touching");
             isHoldable = true;
             holdableItem = hitTransform;
         }
@@ -37,16 +39,19 @@ public class Hand : MonoBehaviour
     }
     void Hold()
     {
+
         if (!isHoldable || holdableItem == null) return;
         heldItem = holdableItem;
-        heldItem.SetParent(transform);
+        heldItem.SetParent(hb);
         heldItem.GetComponent<Rigidbody>().isKinematic = true;
+        heldItem.GetComponent<Rigidbody>().useGravity = false;
     }
     void Release()
     {
         if (heldItem == null) return;
         heldItem.SetParent(null);
         heldItem.GetComponent<Rigidbody>().isKinematic = false;
+        heldItem.GetComponent<Rigidbody>().useGravity = true;
         heldItem = null;
     }
 }
