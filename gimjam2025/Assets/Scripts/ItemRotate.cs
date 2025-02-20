@@ -60,7 +60,7 @@ public class ItemRotate : MonoBehaviour
             x = -1;
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
-            itemLeft.transform.DORotate(rotate * rotateSpeed * Time.deltaTime, rotateBounceTime, RotateMode.LocalAxisAdd).SetEase(Ease.OutElastic);
+            itemLeft.transform.DORotate(rotate * rotateSpeed * Time.deltaTime, rotateBounceTime, RotateMode.WorldAxisAdd).SetEase(Ease.OutElastic);
     }
     void RotateRight()
     {
@@ -77,7 +77,7 @@ public class ItemRotate : MonoBehaviour
             x = -1;
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
-            itemRight.transform.DOLocalRotate(rotate * rotateSpeed * Time.deltaTime, rotateBounceTime, RotateMode.LocalAxisAdd).SetEase(Ease.OutElastic);
+            itemRight.transform.DORotate(rotate * rotateSpeed * Time.deltaTime, rotateBounceTime, RotateMode.WorldAxisAdd).SetEase(Ease.OutElastic);
     }
     void MoveLeft()
     {
