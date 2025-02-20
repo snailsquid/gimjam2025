@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static ItemGenerator;
 
 public class ItemController : MonoBehaviour
 {
@@ -9,8 +11,12 @@ public class ItemController : MonoBehaviour
     private const float STOP_THRESHOLD = 1.5f;
     private bool shouldMove = true;
     private Rigidbody rb;
-    private bool conveyorTracker;
+    private List<ConveyorTracker> conveyorTrackers;
 
+    public void Awake()
+    {
+        conveyorTrackers = FindObjectOfType<ItemGenerator>().conveyorTrackers;
+    }
 
     public void Initialize(bool moveRight)
     {
@@ -34,26 +40,30 @@ public class ItemController : MonoBehaviour
         float currentX = rb.position.x;
         float distanceToTarget = Mathf.Abs(currentX - targetX);
 
-        if (distanceToTarget > STOP_THRESHOLD || conveyorTracker )
+        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
         {
-            if (movingRight)
+            if (distanceToTarget > STOP_THRESHOLD)
             {
-                if (currentX < targetX)
+
+                if (movingRight)
                 {
-                    rb.AddForce(Vector3.right * speed);
+                    if (currentX < targetX)
+                    {
+                        rb.AddForce(Vector3.right * speed);
+                    }
+                }
+                else
+                {
+                    if (currentX > targetX)
+                    {
+                        rb.AddForce(Vector3.left * speed);
+                    }
                 }
             }
             else
             {
-                if (currentX > targetX)
-                {
-                    rb.AddForce(Vector3.left * speed);
-                }
+                rb.velocity = Vector3.zero;
             }
-        }
-        else
-        {
-            rb.velocity = Vector3.zero;
         }
     }
 }

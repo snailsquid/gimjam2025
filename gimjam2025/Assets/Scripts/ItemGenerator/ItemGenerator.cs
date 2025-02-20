@@ -11,7 +11,7 @@ public class ItemGenerator : MonoBehaviour
         public int maxItems = 2;
         public float itemSpacing = 2f;
     }
-    private List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
+    public List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
     public static ItemGenerator instance { get; private set; }
     public GameObject[] spawnPoints;
     public GameObject[] itemPrefabs;
