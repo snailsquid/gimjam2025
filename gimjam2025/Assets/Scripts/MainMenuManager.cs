@@ -19,11 +19,6 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    public void SelectLevel()
-    {
-        SceneManager.LoadScene("LevelSelection");
-    }
-
     public void QuitGame()
     {
         Application.Quit();
