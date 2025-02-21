@@ -7,6 +7,9 @@ TagManager:
   - Attachment
   - AttachmentPoint
   - CompositeItem
+  - Hand
+  - Holdable
+  - Left
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Hand
   - 
   - 
   - 
