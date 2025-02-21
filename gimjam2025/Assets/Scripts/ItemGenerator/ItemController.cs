@@ -24,7 +24,6 @@ public class ItemController : MonoBehaviour
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.mass *= 5;
         rb.constraints = RigidbodyConstraints.FreezePositionZ;
     }
 
@@ -34,7 +33,7 @@ public class ItemController : MonoBehaviour
         {
             print("Collision Exit Conveyor");
             onConveyor = false;
-            rb.velocity = new Vector3(rb.velocity.x * .75f, -speed, 0);
+            rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
         }
     }
 
