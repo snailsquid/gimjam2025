@@ -19,6 +19,23 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public LevelSelectionManager levelSelectionManager;
+    public LoadingScreen loadingScreen;
+    public static bool wasPlayed;
+
+    public void PlayGame()
+    {
+        if (wasPlayed == true)
+        {
+            levelSelectionManager.SelectLevel();
+        }
+        else
+        {
+            wasPlayed = true;
+            loadingScreen.LoadLevelBtn("MainMenu");
+        }
+    }
+
     public void QuitGame()
     {
         Application.Quit();

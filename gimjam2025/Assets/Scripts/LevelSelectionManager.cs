@@ -11,6 +11,5 @@ public class LevelSelectionManager : MonoBehaviour
     {
         mainMenu.SetActive(false);
         levelSelection.SetActive(true);
-
     }
 }
