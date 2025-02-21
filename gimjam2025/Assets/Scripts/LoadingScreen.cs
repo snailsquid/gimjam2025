@@ -22,7 +22,7 @@ public class LoadingScreen : MonoBehaviour
         scene = levelToLoad;
         isLoading = true;
         
-        //LoadLevelAsync(levelToLoad);
+        /*LoadLevelAsync(levelToLoad);*/        //code for "real" loading screen (tbh, idk how it work)
     }
 
     void Update()
@@ -35,12 +35,12 @@ public class LoadingScreen : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadSceneAsync(scene);
+                SceneManager.LoadSceneAsync(scene); // scene can be changed to int later
             }
         }
     }
     /*
-    IEnumerator LoadLevelAsync(string levelToLoad)
+    IEnumerator LoadLevelAsync(string levelToLoad)      //code for "real" loading screen (tbh, idk how it work)
     {
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
 

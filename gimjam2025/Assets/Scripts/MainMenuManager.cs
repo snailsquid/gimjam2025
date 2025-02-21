@@ -21,18 +21,18 @@ public class MainMenuManager : MonoBehaviour
 
     public LevelSelectionManager levelSelectionManager;
     public LoadingScreen loadingScreen;
-    public static bool wasPlayed;
+    public static bool playedForTheFirstTime = true;
 
     public void PlayGame()
     {
-        if (wasPlayed == true)
+        if (!playedForTheFirstTime)
         {
             levelSelectionManager.SelectLevel();
         }
         else
         {
-            wasPlayed = true;
-            loadingScreen.LoadLevelBtn("MainMenu");
+            playedForTheFirstTime = false;
+            loadingScreen.LoadLevelBtn("MainMenu"); //Change this when first level scene is ready
         }
     }
 
