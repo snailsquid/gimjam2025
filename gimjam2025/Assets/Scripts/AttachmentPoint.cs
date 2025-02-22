@@ -50,9 +50,33 @@ public class AttachmentPoint : MonoBehaviour
         attachedPoint.attachedPoint = this;
         Attachment attached = attachedPoint.attachment;
         Physics.IgnoreCollision(attached.GetComponent<Collider>(), attachment.GetComponent<Collider>(), true);
-        attachedPoint.transform.SnapThisThenParent(transform, () =>
+        AttachmentPoint toBeAttached, toAttachTo;
+        if (attached.depth > attachment.depth)
         {
-            attached.AttachTo(attachment);
+            toAttachTo = this;
+            toBeAttached = attachedPoint;
+        }
+        else if (attached.depth < attachment.depth)
+        {
+            toAttachTo = attachedPoint;
+            toBeAttached = this;
+        }
+        else
+        {
+            if (attachment.isHeld)
+            {
+                toAttachTo = this;
+                toBeAttached = attachedPoint;
+            }
+            else
+            {
+                toAttachTo = attachedPoint;
+                toBeAttached = this;
+            }
+        }
+        toBeAttached.transform.SnapThisThenParent(toAttachTo.transform, () =>
+        {
+            toBeAttached.attachment.AttachTo(toAttachTo.attachment);
         });
     }
     void OnTriggerStay(Collider collision)
@@ -96,5 +120,6 @@ public static class TransformExtensions
             current.SetParent(currentParent);
             callback();
         });
+        sequence.Play();
     }
 }

@@ -12,6 +12,7 @@ public class Attachment : MonoBehaviour
     public List<AttachmentPoint> attachmentPoints = new List<AttachmentPoint>();
     public bool isHeld = false;
     public bool isHead = false;
+    public int depth = 100000;
     public Hand hand;
     public string attachmentKey;
     Vector3 positionOffset;
@@ -28,11 +29,12 @@ public class Attachment : MonoBehaviour
     {
         InitPoints();
     }
-    public void AttachTo(Attachment attachment, AttachmentPoint previousAttachmentPoint = null)
+    public void AttachTo(Attachment attachment, AttachmentPoint previousAttachmentPoint = null, int previousDepth = 0)
     {
         if (attachment.isHeld)
         {
             FixedJoint joint = gameObject.GetComponent<FixedJoint>();
+            depth = previousDepth + 1;
             if (joint == null)
             {
 
@@ -43,6 +45,7 @@ public class Attachment : MonoBehaviour
             {
                 Debug.Log("Setting " + name + " as parent");
                 transform.SetParent(hand != null ? hand.transform : null);
+                depth = 0;
                 Destroy(joint);
             }
             else
@@ -54,7 +57,12 @@ public class Attachment : MonoBehaviour
             }
             AttachAttached(attachment, previousAttachmentPoint);
         }
-        else FindHeld();
+        else
+        {
+            Attachment held = FindHeld();
+            held.isHeld = true;
+            held.AttachTo(held);
+        }
     }
     public Attachment FindHead(Attachment previous = null)
     {
@@ -68,9 +76,9 @@ public class Attachment : MonoBehaviour
         }
         return null;
     }
-    void FindHeld(AttachmentPoint previousAttachmentPoint = null)
+    Attachment FindHeld(AttachmentPoint previousAttachmentPoint = null)
     {
-        if (isHeld) { Debug.Log("self is held, attaching.."); AttachTo(this); return; }
+        if (isHeld) { Debug.Log("self is held"); return this; }
         foreach (AttachmentPoint attachmentPoint in attachmentPoints)
         {
             if (attachmentPoint == previousAttachmentPoint || attachmentPoint.attachedPoint == null)
@@ -81,15 +89,16 @@ public class Attachment : MonoBehaviour
             else if (attachmentPoint.attachedPoint.attachment.isHeld)
             {
                 Debug.Log("Found held" + attachmentPoint.attachedPoint.attachment.name);
-                attachmentPoint.attachedPoint.attachment.AttachTo(attachmentPoint.attachedPoint.attachment);
-                break;
+                return attachmentPoint.attachedPoint.attachment;
             }
             else
             {
                 Debug.Log("Held not found, checking " + attachmentPoint.attachedPoint.attachment.name);
-                attachmentPoint.attachedPoint.attachment.FindHeld(attachmentPoint.attachedPoint);
+                return attachmentPoint.attachedPoint.attachment.FindHeld(attachmentPoint.attachedPoint);
             }
         }
+        Debug.Log("There is no held, returning self");
+        return this;
     }
     public void AttachAttached(Attachment attachedTo, AttachmentPoint previousAttachmentPoint) // Attach all attachment points to the attached object
     {
@@ -98,7 +107,7 @@ public class Attachment : MonoBehaviour
             Debug.Log("Checking " + attachmentPoint.name + " on " + name);
             AttachmentPoint attachedPoint = attachmentPoint.attachedPoint;
             if (attachedPoint == null || attachmentPoint == previousAttachmentPoint) continue;
-            attachedPoint.attachment.AttachTo(attachedTo, attachedPoint);
+            attachedPoint.attachment.AttachTo(attachedTo, attachedPoint, depth);
         }
     }
     public void Hold(Hand hand)
