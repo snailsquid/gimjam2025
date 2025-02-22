@@ -69,12 +69,13 @@ public class Attachment : MonoBehaviour
         if (isHead) { Debug.Log(name + " is head"); return this; }
         foreach (AttachmentPoint attachmentPoint in attachmentPoints)
         {
-            if (attachmentPoint.attachedPoint.attachment == previous || attachmentPoint.attachedPoint == null) continue;
+            if (attachmentPoint.attachedPoint == null || attachmentPoint.attachedPoint.attachment == previous) continue;
             Debug.Log("searching " + name);
             Attachment attached = attachmentPoint.attachedPoint.attachment.FindHead(this);
             if (attached != null) return attached;
         }
-        return null;
+        isHead = true;
+        return this;
     }
     Attachment FindHeld(AttachmentPoint previousAttachmentPoint = null)
     {
@@ -138,7 +139,10 @@ public class Attachment : MonoBehaviour
     public bool EqualTo(Attachment other)
     {
         if (this == null || other == null) return false;
-        return this.FindHead().GetData().IsEqual(other.FindHead().GetData());
+        AttachmentData thisData = this.FindHead().GetData();
+        AttachmentData otherData = other.FindHead().GetData();
+        if (thisData == null || otherData == null) return false;
+        return thisData.IsEqual(otherData);
     }
 }
 
