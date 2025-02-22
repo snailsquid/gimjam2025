@@ -6,6 +6,7 @@ using static ItemGenerator;
 public class ItemController : MonoBehaviour
 {
     private readonly float speed = 1f;
+    public int conveyorSpeed = 3;
     private bool movingRight;
     private readonly float targetX = 0.0f;
     private bool onConveyor = true;
@@ -35,35 +36,37 @@ public class ItemController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Conveyor"))
         {
-            onConveyor = false;
             rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
+            onConveyor = false;
         }
     }
-
     private void FixedUpdate()
     {
         if (onConveyor)
         {
-
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
             float currentX = rb.position.x;
-
             foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
             {
                 if (movingRight)
                 {
                     if (currentX < targetX)
                     {
-                        rb.AddForce(Vector3.right * speed);
+                        rb.AddForce(Vector3.right * speed * conveyorSpeed);
                     }
                 }
                 else
                 {
                     if (currentX > targetX)
                     {
-                        rb.AddForce(Vector3.left * speed);
+                        rb.AddForce(Vector3.left * speed * conveyorSpeed);
                     }
                 }
             }
+        }
+        else
+        {
+            rb.constraints = RigidbodyConstraints.None;
         }
     }
 }

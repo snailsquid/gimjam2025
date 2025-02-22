@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1494389760031810895}
   - component: {fileID: 5774524370805418847}
   - component: {fileID: 8209324293242479772}
-  - component: {fileID: 6990628356977837983}
   - component: {fileID: -421635695709020192}
+  - component: {fileID: -1067480413829932852}
   m_Layer: 0
   m_Name: RedCube
   m_TagString: Item
@@ -85,8 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6990628356977837983
-BoxCollider:
+--- !u!114 &-421635695709020192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751694010972011677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07e13eb4f65f7264db81b9c479fd55ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &-1067480413829932852
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -104,17 +116,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-421635695709020192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751694010972011677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07e13eb4f65f7264db81b9c479fd55ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
