@@ -18,12 +18,13 @@ public class Submit : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         Transform hitTransform = other.gameObject.transform;
+        GameObject objects = other.gameObject;
         Attachment attachment = other.GetComponent<Attachment>();
         if(hitTransform.CompareTag("Holdable"))
         {
             Debug.Log(gameObject);
             checking = attachment.EqualTo(attachmentPrefab);
-            Submiting();
+            Submiting(objects);
             
         }
     }
@@ -36,17 +37,18 @@ public class Submit : MonoBehaviour
             checking = false;
         }
     }
-    void Submiting()
+    void Submiting(GameObject objects)
     {
         if(checking)
         {
             Debug.Log("You got the right thing");
-            //Destroy();
+            Destroy(objects);
+            checking = false;
         }
         else
         {
             Debug.Log("wrong");
-            SceneManager.LoadScene("SubmitItem");
+            //SceneManager.LoadScene("SubmitItem");
         }
     }
 }
