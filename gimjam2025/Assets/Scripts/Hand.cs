@@ -7,9 +7,10 @@ public class Hand : MonoBehaviour
     Rigidbody rigidBody;
     public Transform heldItem { get; private set; }
     public Transform hb;
+    public SecretItem secretItem;
     Transform holdableItem;
     [SerializeField] KeyCode holdKey = KeyCode.E;
-    bool isHoldable = false;
+    bool isHoldable = false, isSecretHoldable = false;
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -24,11 +25,19 @@ public class Hand : MonoBehaviour
             isHoldable = true;
             holdableItem = hitTransform;
         }
+        else if(hitTransform.CompareTag("Secret"))
+        {
+            Debug.Log("Touching Secret");
+            //secretItem.TouchingSecret();
+            isSecretHoldable = true;
+            holdableItem = hitTransform;
+        }
     }
     void OnTriggerExit(Collider collision)
     {
         holdableItem = null;
         isHoldable = false;
+        isSecretHoldable = false;
     }
     void Update()
     {
@@ -39,12 +48,18 @@ public class Hand : MonoBehaviour
     }
     void Hold()
     {
-
-        if (!isHoldable || holdableItem == null) return;
-        heldItem = holdableItem;
-        heldItem.SetParent(hb);
-        heldItem.GetComponent<Rigidbody>().isKinematic = true;
-        heldItem.GetComponent<Rigidbody>().useGravity = false;
+        if (isSecretHoldable)
+        {
+            secretItem.TouchingSecret();
+        }
+        else
+        {
+            if (!isHoldable || holdableItem == null) return;
+            heldItem = holdableItem;
+            heldItem.SetParent(hb);
+            heldItem.GetComponent<Rigidbody>().isKinematic = true;
+            heldItem.GetComponent<Rigidbody>().useGravity = false;
+        }  
     }
     void Release()
     {

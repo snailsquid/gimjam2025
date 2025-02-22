@@ -13,7 +13,7 @@ public class Holdable : MonoBehaviour
         rigidBody.drag = 200;
         rigidBody.angularDrag = 200;
         rigidBody.constraints = RigidbodyConstraints.FreezePositionY;
-        gameObject.tag = "Holdable";
+        //gameObject.tag = "Holdable";
     }
     // void OnCollisionEnter(Collision collision)
     // {
@@ -23,4 +23,8 @@ public class Holdable : MonoBehaviour
     // {
     //     GetComponent<Rigidbody>().isKinematic = true;
     // }
+    public void DestroyMe()
+    {
+        Destroy(gameObject);
+    }
 }
