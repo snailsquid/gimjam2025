@@ -18,10 +18,13 @@ public class MainMenuManager : MonoBehaviour
             instance = this;
         }
     }
-
-    public LevelSelectionManager levelSelectionManager;
-    public LoadingScreen loadingScreen;
+    
     public static bool playedForTheFirstTime = true;
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject levelSelection;
+    [SerializeField] private GameObject logMenu;
+    [SerializeField] private LevelSelectionManager levelSelectionManager;
+    [SerializeField] private LoadingScreen loadingScreen;
 
     public void PlayGame()
     {
@@ -36,7 +39,12 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    
+    public void BackToMainMenu()
+    {
+        mainMenu.SetActive(true);
+        levelSelection.SetActive(false);
+        logMenu.SetActive(false);
+    }
 
     public void QuitGame()
     {

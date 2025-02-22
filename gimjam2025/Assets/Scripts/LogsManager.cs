@@ -31,4 +31,13 @@ public class LogsManager : MonoBehaviour
         logMenu.SetActive(true);
     }
 
+    public void DisplayTitleContent(string title_)
+    {
+        title.text = title_;
+    }
+    public void DisplayDescriptionContent(string description_)
+    {
+        description.text = description_;
+    }
+
 }
