@@ -2,43 +2,57 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttachmentPoint : MonoBehaviour
 {
-    [SerializeField] public AttachmentPointData data;
     [SerializeField] float snapDistance = 0.1f, snapRotation = 5f;
-    [SerializeField] AttachmentType initialAttachmentType;
+    [SerializeField] public AttachmentType type;
     public AttachmentPoint attachedPoint { get; private set; }
-    public Attachment attachment;
+    public Attachment attachment { get; private set; }
     public bool isSnapped;
     Collider componentCollider;
     Rigidbody componentRigidbody;
+    FixedJoint componentJoint;
     void Awake()
     {
         transform.tag = "AttachmentPoint";
     }
     void Start()
     {
+        InitComponents();
+    }
+    public AttachmentData GetData()
+    {
+        return attachedPoint.attachment.GetData();
+    }
+    void InitComponents()
+    {
         attachment = transform.parent.GetComponent<Attachment>();
-        data = new AttachmentPointData(transform.localPosition, transform.localEulerAngles, initialAttachmentType);
+        gameObject.AddComponent<Rigidbody>();
+        gameObject.AddComponent<FixedJoint>();
         componentCollider = GetComponent<Collider>();
         componentRigidbody = GetComponent<Rigidbody>();
+        componentJoint = GetComponent<FixedJoint>();
+
         if (componentCollider == null) Debug.LogError("AttachmentPoint must have a collider");
         if (componentRigidbody == null) Debug.LogError("AttachmentPoint must have a Rigidbody");
         componentRigidbody.useGravity = false;
         componentCollider.isTrigger = true;
+
+        if (attachment.transform.GetComponent<Rigidbody>() == null) attachment.gameObject.AddComponent<Rigidbody>();
+        componentJoint.connectedBody = attachment.transform.GetComponent<Rigidbody>();
     }
     void Attach(AttachmentPoint attachedPoint)
     {
         this.attachedPoint = attachedPoint;
         attachedPoint.attachedPoint = this;
         Attachment attached = attachedPoint.attachment;
+        Physics.IgnoreCollision(attached.GetComponent<Collider>(), attachment.GetComponent<Collider>(), true);
         attachedPoint.transform.SnapThisThenParent(transform, () =>
         {
-
             attached.AttachTo(attachment);
-            attachment.AttachAttached(attached, null);
         });
     }
     void OnTriggerStay(Collider collision)
@@ -55,23 +69,11 @@ public class AttachmentPoint : MonoBehaviour
         Vector3 collisionRotation = otherAttachedPoint.transform.eulerAngles;
         bool isPositionSnappable = Vector3.Distance(transform.position, collisionPosition) < snapDistance;
         bool isRotationSnappable = Vector3.Distance(transform.eulerAngles, collisionRotation) < snapRotation;
-        bool isTypeMatch = (data.type == AttachmentType.Hole && otherAttachedPoint.data.type == AttachmentType.Peg) || (data.type == AttachmentType.Peg && otherAttachedPoint.data.type == AttachmentType.Hole);
+        bool isTypeMatch = (type == AttachmentType.Hole && otherAttachedPoint.type == AttachmentType.Peg) || (type == AttachmentType.Peg && otherAttachedPoint.type == AttachmentType.Hole);
         return isPositionSnappable && isRotationSnappable && isTypeMatch;
     }
 }
 
-[Serializable]
-public class AttachmentPointData
-{
-    [SerializeField] public Vector3 position, rotation; // Local 
-    [SerializeField] public AttachmentType type;
-    public AttachmentPointData(Vector3 position, Vector3 rotation, AttachmentType type)
-    {
-        this.position = position;
-        this.rotation = rotation;
-        this.type = type;
-    }
-}
 public enum AttachmentType // Peg goes into Hole
 {
     Peg,
@@ -86,8 +88,13 @@ public static class TransformExtensions
         Vector3 offset = current.position - currentParent.position;
         current.SetParent(null);
         var sequence = DOTween.Sequence();
-        sequence.Append(current.DOMove(target.position, 0.1f));
+        current.position = target.position;
         sequence.Append(currentParent.DOMove(target.position - offset, 0.1f));
-        sequence.AppendCallback(() => { current.position = target.position; currentParent.position = target.position - offset; current.SetParent(currentParent); callback(); });
+        sequence.AppendCallback(() =>
+        {
+            currentParent.position = target.position - offset;
+            current.SetParent(currentParent);
+            callback();
+        });
     }
 }
