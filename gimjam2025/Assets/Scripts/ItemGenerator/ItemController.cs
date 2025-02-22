@@ -5,14 +5,12 @@ using static ItemGenerator;
 
 public class ItemController : MonoBehaviour
 {
-    private float speed = 1f;
+    private readonly float speed = 1f;
     private bool movingRight;
-    private float targetX = 0.0f;
-    private const float STOP_THRESHOLD = 1.5f;
+    private readonly float targetX = 0.0f;
     private bool onConveyor = true;
     private Rigidbody rb;
     private List<ConveyorTracker> conveyorTrackers;
-
     public void Awake()
     {
         conveyorTrackers = FindObjectOfType<ItemGenerator>().conveyorTrackers;
@@ -27,11 +25,16 @@ public class ItemController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionZ;
     }
 
+    public void OnDestroy()
+    {
+        Debug.Log("Destroying " + gameObject.name);
+        ItemManager.Instance.AddToRespawnQueue(gameObject.name.Replace("(Clone)", ""));
+    }
+
     public void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag == "Conveyor")
+        if (collision.gameObject.CompareTag("Conveyor"))
         {
-            print("Collision Exit Conveyor");
             onConveyor = false;
             rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
         }
@@ -50,14 +53,14 @@ public class ItemController : MonoBehaviour
                 {
                     if (currentX < targetX)
                     {
-                        rb.velocity = Vector3.right * speed;
+                        rb.AddForce(Vector3.right * speed);
                     }
                 }
                 else
                 {
                     if (currentX > targetX)
                     {
-                        rb.velocity = Vector3.left * speed;
+                        rb.AddForce(Vector3.left * speed);
                     }
                 }
             }

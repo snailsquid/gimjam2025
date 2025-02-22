@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public class ConveyorSetup : MonoBehaviour
+public class ConveyorManager : MonoBehaviour
 {
-    public static ItemGenerator instance { get; private set; }
     public float conveyorWidth = 10f;
     public float conveyorHeight = 1f;
     private ItemGenerator itemGenerator;
     public GameObject conveyorPrefab;
     private Vector3 conveyorPosition = new Vector3(3, 0.75f, -7);
+    public ConveyorManager instance { get; private set; }
 
     void Awake()
     {
