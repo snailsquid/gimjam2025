@@ -10,6 +10,7 @@ TagManager:
   - Hand
   - Holdable
   - Left
+  - SubmitingPoint
   layers:
   - Default
   - TransparentFX
