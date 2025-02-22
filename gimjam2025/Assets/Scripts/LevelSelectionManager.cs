@@ -20,8 +20,8 @@ public class LevelSelectionManager : MonoBehaviour
     }
 
     public Button[] levelButtons;
+    public List<Level> levels;
     public int highestLevelCleared;
-    [SerializeField] private int levelSceneIndex;       //will be used for easier scene navigation
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelection;
 
@@ -40,5 +40,10 @@ public class LevelSelectionManager : MonoBehaviour
     {
         mainMenu.SetActive(false);
         levelSelection.SetActive(true);
+    }
+
+    public void UpdateLevels()
+    {
+
     }
 }
