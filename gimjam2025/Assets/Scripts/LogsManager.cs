@@ -69,6 +69,7 @@ public class LogsManager : MonoBehaviour
         {
             GameObject newObject = Instantiate(logButton);
             newObject.transform.SetParent(content);
+            newObject.transform.localScale = new Vector3(1.7f,1.7f,1.7f);
             TMP_Text text = newObject.transform.GetChild(0).GetComponent<TMP_Text>();
             text.text = log.title;
             Button button = newObject.GetComponent<Button>();
