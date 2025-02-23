@@ -31,7 +31,6 @@ public class ItemRotate : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Debug.Log(Input.GetAxis("Mouse X"));
         itemLeft = handLeft.heldItem;
         itemRight = handRight.heldItem;
         RotateLeft();
@@ -74,9 +73,9 @@ public class ItemRotate : MonoBehaviour
         if (!Input.GetKey(activateRightKeybind) || itemRight == null) return;
         Vector3 rotate;
         float x = 0, y = 0;
-        if (Input.GetAxis("Mouse X")!=0)
+        if (Input.GetAxis("Mouse X") != 0)
             y = Input.GetAxis("Mouse X");
-        if (Input.GetAxis("Mouse Y")!=0)
+        if (Input.GetAxis("Mouse Y") != 0)
             x = Input.GetAxis("Mouse Y");
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
@@ -96,25 +95,25 @@ public class ItemRotate : MonoBehaviour
         else if (Input.GetKey(rotateLeftYKeybind.Item2))
             z = -1;
         move = new Vector3(x, 0, z);
-        if(handLeft.transform.position.x < handMin.transform.position.x)
+        if (handLeft.transform.position.x < handMin.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.x > handMax.transform.position.x)
+        else if (handLeft.transform.position.x > handMax.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.z < handMin.transform.position.z)
+        else if (handLeft.transform.position.z < handMin.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMin.transform.position.z);
             handLeft.transform.position = pos;
         }
-        else if(handLeft.transform.position.z > handMax.transform.position.z)
+        else if (handLeft.transform.position.z > handMax.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMax.transform.position.z);
@@ -124,9 +123,9 @@ public class ItemRotate : MonoBehaviour
         {
             if (x != 0 || z != 0)
             {
-            actualBounceTime = bounceTime;
-            handTransformLeft.transform.DOMove(handTransformLeft.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
-            handLeft.transform.DOMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
+                actualBounceTime = bounceTime;
+                handTransformLeft.transform.DOMove(handTransformLeft.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
+                handLeft.transform.DOMove(handLeft.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
             }
         }
 
@@ -136,34 +135,34 @@ public class ItemRotate : MonoBehaviour
         if (Input.GetKey(activateRightKeybind) || handRight == null) return;
         Vector3 move;
         float x = 0, z = 0;
-        if (Input.GetAxis("Mouse X")>0)
-            x = 0.5f + Input.GetAxis("Mouse X");
-        else if (Input.GetAxis("Mouse X")<0)
-            x = -0.5f + Input.GetAxis("Mouse X");
-        if (Input.GetAxis("Mouse Y")>0)
-            z = 0.5f + Input.GetAxis("Mouse Y");
-        else if (Input.GetAxis("Mouse Y")<0)
-            z = -0.5f + Input.GetAxis("Mouse Y");
+        if (Input.GetAxis("Mouse X") > 0)
+            x = Input.GetAxis("Mouse X");
+        else if (Input.GetAxis("Mouse X") < 0)
+            x = Input.GetAxis("Mouse X");
+        if (Input.GetAxis("Mouse Y") > 0)
+            z = Input.GetAxis("Mouse Y");
+        else if (Input.GetAxis("Mouse Y") < 0)
+            z = Input.GetAxis("Mouse Y");
         move = new Vector3(x, 0, z);
-        if(handRight.transform.position.x < handMin.transform.position.x)
+        if (handRight.transform.position.x < handMin.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.x > handMax.transform.position.x)
+        else if (handRight.transform.position.x > handMax.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.z < handMin.transform.position.z)
+        else if (handRight.transform.position.z < handMin.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMin.transform.position.z);
             handRight.transform.position = pos;
         }
-        else if(handRight.transform.position.z > handMax.transform.position.z)
+        else if (handRight.transform.position.z > handMax.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMax.transform.position.z);
@@ -173,12 +172,15 @@ public class ItemRotate : MonoBehaviour
         {
             if (x != 0 || z != 0)
             {
-            actualBounceTime = bounceTime;
-            handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
-            handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(Ease.OutElastic);
+                actualBounceTime = bounceTime;
+                Ease ease = Ease.OutElastic;
+                if (Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(z, 2)) < 0.4f)
+                    ease = Ease.OutExpo;
+                handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease);
+                handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease);
             }
         }
-        
+
     }
 }
 
