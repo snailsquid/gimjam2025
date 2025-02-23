@@ -132,9 +132,8 @@ public class ItemGenerator : MonoBehaviour
 
         // Add ItemController component
         ItemController itemController = newItem.AddComponent<ItemController>();
-        bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
 
-        itemController.Initialize(isMovingRight);
+        itemController.Initialize(conveyorTracker.direction);
 
         ItemManager.Instance.RemoveFromQueue(conveyorTracker.direction);
     }

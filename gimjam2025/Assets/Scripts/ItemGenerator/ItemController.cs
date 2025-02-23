@@ -8,6 +8,7 @@ public class ItemController : MonoBehaviour
     private readonly float speed = 1f;
     public int conveyorSpeed = 3;
     private bool movingRight;
+    public ItemManager.Direction direction;
     private readonly float targetX = 0.0f;
     private bool onConveyor = true;
     private Rigidbody rb;
@@ -24,9 +25,9 @@ public class ItemController : MonoBehaviour
         {
         }
     }
-    public void Initialize(bool moveRight)
+    public void Initialize(ItemManager.Direction direction)
     {
-        movingRight = moveRight;
+        this.direction = direction;
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
