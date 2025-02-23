@@ -1,0 +1,12 @@
+{
+  "itemRaws": [
+    {
+      "itemName": "BlueSphere",
+      "initialCount": 2
+    },
+    {
+      "itemName": "RedCube",
+      "initialCount": 2
+    }
+  ]
+}
