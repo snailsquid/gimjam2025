@@ -13,6 +13,7 @@ TagManager:
   - Hand
   - Holdable
   - Left
+  - Secret
   - SubmitingPoint
   layers:
   - Default
