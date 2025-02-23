@@ -74,14 +74,10 @@ public class ItemRotate : MonoBehaviour
         if (!Input.GetKey(activateRightKeybind) || itemRight == null) return;
         Vector3 rotate;
         float x = 0, y = 0;
-        if (Input.GetAxis("Mouse X")>0)
-            y = 1;
-        else if (Input.GetAxis("Mouse X")<0)
-            y = -1;
-        if (Input.GetAxis("Mouse Y")>0)
-            x = 1;
-        else if (Input.GetAxis("Mouse Y")<0)
-            x = -1;
+        if (Input.GetAxis("Mouse X")!=0)
+            y = Input.GetAxis("Mouse X");
+        if (Input.GetAxis("Mouse Y")!=0)
+            x = Input.GetAxis("Mouse Y");
         rotate = new Vector3(x, y, 0);
         if (x != 0 || y != 0)
             itemRight.transform.DORotate(rotate * rotateSpeed * Time.deltaTime, rotateBounceTime, RotateMode.WorldAxisAdd).SetEase(Ease.OutElastic);
@@ -141,13 +137,13 @@ public class ItemRotate : MonoBehaviour
         Vector3 move;
         float x = 0, z = 0;
         if (Input.GetAxis("Mouse X")>0)
-            x = 1 + Input.GetAxis("Mouse X")/5;
+            x = 0.5f + Input.GetAxis("Mouse X");
         else if (Input.GetAxis("Mouse X")<0)
-            x = -1 + Input.GetAxis("Mouse X")/5;
+            x = -0.5f + Input.GetAxis("Mouse X");
         if (Input.GetAxis("Mouse Y")>0)
-            z = 1 + Input.GetAxis("Mouse Y")/5;
+            z = 0.5f + Input.GetAxis("Mouse Y");
         else if (Input.GetAxis("Mouse Y")<0)
-            z = -1 + Input.GetAxis("Mouse Y")/5;
+            z = -0.5f + Input.GetAxis("Mouse Y");
         move = new Vector3(x, 0, z);
         if(handRight.transform.position.x < handMin.transform.position.x)
         {
