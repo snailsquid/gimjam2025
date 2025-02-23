@@ -100,24 +100,28 @@ public class ItemRotate : MonoBehaviour
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMin.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
+            handTransformLeft.transform.position = pos;
         }
         else if (handLeft.transform.position.x > handMax.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMax.transform.position.x, handLeft.transform.position.y, handLeft.transform.position.z);
             handLeft.transform.position = pos;
+            handTransformLeft.transform.position = pos;
         }
         else if (handLeft.transform.position.z < handMin.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMin.transform.position.z);
             handLeft.transform.position = pos;
+            handTransformLeft.transform.position = pos;
         }
         else if (handLeft.transform.position.z > handMax.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handLeft.transform.position.x, handLeft.transform.position.y, handMax.transform.position.z);
             handLeft.transform.position = pos;
+            handTransformLeft.transform.position = pos;
         }
         else
         {
@@ -149,24 +153,28 @@ public class ItemRotate : MonoBehaviour
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMin.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
+            handTransformRight.transform.position = pos;
         }
         else if (handRight.transform.position.x > handMax.transform.position.x)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handMax.transform.position.x, handRight.transform.position.y, handRight.transform.position.z);
             handRight.transform.position = pos;
+            handTransformRight.transform.position = pos;
         }
         else if (handRight.transform.position.z < handMin.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMin.transform.position.z);
             handRight.transform.position = pos;
+            handTransformRight.transform.position = pos;
         }
         else if (handRight.transform.position.z > handMax.transform.position.z)
         {
             actualBounceTime = 0;
             Vector3 pos = new Vector3(handRight.transform.position.x, handRight.transform.position.y, handMax.transform.position.z);
             handRight.transform.position = pos;
+            handTransformRight.transform.position = pos;
         }
         else
         {
