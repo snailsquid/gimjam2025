@@ -29,7 +29,7 @@ public class ItemRotate : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
-    void FixedUpdate()
+    void Update()
     {
         itemLeft = handLeft.heldItem;
         itemRight = handRight.heldItem;
@@ -173,11 +173,9 @@ public class ItemRotate : MonoBehaviour
             if (x != 0 || z != 0)
             {
                 actualBounceTime = bounceTime;
-                Ease ease = Ease.OutElastic;
-                if (Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(z, 2)) < 0.4f)
-                    ease = Ease.OutExpo;
-                handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease);
-                handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease);
+                Ease ease = Ease.OutExpo;
+                handTransformRight.transform.DOMove(handTransformRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease).SetSpeedBased();
+                handRight.transform.DOMove(handRight.transform.position + (move.normalized * speed * Time.deltaTime), actualBounceTime).SetEase(ease).SetSpeedBased();
             }
         }
 
