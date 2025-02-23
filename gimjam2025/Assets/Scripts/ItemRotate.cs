@@ -74,7 +74,7 @@ public class ItemRotate : MonoBehaviour
         Vector3 rotate;
         float x = 0, y = 0;
         if (Input.GetAxis("Mouse X") != 0)
-            y = Input.GetAxis("Mouse X");
+            y = -Input.GetAxis("Mouse X");
         if (Input.GetAxis("Mouse Y") != 0)
             x = Input.GetAxis("Mouse Y");
         rotate = new Vector3(x, y, 0);

@@ -15,7 +15,8 @@ public class DestroyOutOfBounds : MonoBehaviour
         {
             Debug.Log(ItemGenerator.instance.conveyorTrackers);
 
-            ItemGenerator.instance.conveyorTrackers.Find(x => x.direction == itemController.direction).items.RemoveAt(0);
+            Debug.Log(itemController.direction);
+            ItemGenerator.instance.conveyorTrackers.Find(x => x.direction == itemController.direction).items.Remove(gameObject);
             Destroy(gameObject);
         }
     }

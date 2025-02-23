@@ -26,7 +26,6 @@ public class DialogueBoxScript : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optionally, persist across scenes
         }
 
         // Optionally ensure the dialogue is hidden at the start

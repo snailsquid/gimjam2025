@@ -6,6 +6,6 @@ public class TestingPopup : MonoBehaviour
 {
     public void Show()
     {
-        LogPopupScript.Instance.ShowDialogue("yot", 2f);
-    }    
+        LogPopupScript.Instance.ShowPopup("yot", 2f);
+    }
 }

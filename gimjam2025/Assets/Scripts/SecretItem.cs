@@ -4,23 +4,18 @@ using UnityEngine;
 
 public class SecretItem : MonoBehaviour
 {
-    public bool holdingSecretItem;
-    GameObject secret;
+    public string logPopupText;
+    public int secretNumber;
+    public float popupTime;
     void Start()
     {
-        holdingSecretItem = false;
     }
 
-    void Update()
-    {
-        if(holdingSecretItem)
-        {
-            secret = GameObject.FindGameObjectWithTag ("Secret");
-            Destroy(secret);
-        }
-    }
     public void TouchingSecret()
     {
-        holdingSecretItem = true;
+        // Do something then destroy
+        LogPopupScript.Instance.ShowPopup(logPopupText, popupTime);
+        SecretManager.Instance.AddSecret(secretNumber);
+        Destroy(gameObject);
     }
 }

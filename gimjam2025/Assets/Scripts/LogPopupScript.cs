@@ -26,7 +26,6 @@ public class LogPopupScript : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optionally, persist across scenes
         }
 
         // Optionally ensure the dialogue is hidden at the start
@@ -34,7 +33,7 @@ public class LogPopupScript : MonoBehaviour
     }
 
     // 2. Public function to show and fade in text, wait, then fade out
-    public void ShowDialogue(string text, float displayTime)
+    public void ShowPopup(string text, float displayTime)
     {
         // Stop any ongoing fade routines before starting a new one
         StopAllCoroutines();
