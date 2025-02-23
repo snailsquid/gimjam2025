@@ -45,13 +45,6 @@ public class LevelSelectionManager : MonoBehaviour
         };
         UpdateLevels();
     }
-    void Update()
-    {
-        foreach(GameObject gameObject in image3D)
-        {
-            gameObject.transform.Rotate(1,1,1);
-        }
-    }
     /*void Start()
     {
         for (int i = 0; i < levelButtons.Length; i++)
