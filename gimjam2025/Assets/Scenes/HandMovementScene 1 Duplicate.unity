@@ -3157,6 +3157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hb: {fileID: 754317413}
+  secretItem: {fileID: 0}
   holdKey: 101
 --- !u!4 &1409315512 stripped
 Transform:
@@ -3714,7 +3715,7 @@ MonoBehaviour:
   bounceTime: 0.69
   rotateBounceTime: 0.69
   activateLeftKeybind: 304
-  activateRightKeybind: 47
+  activateRightKeybind: 324
   active: {r: 0, g: 1, b: 0.008930683, a: 1}
   inactive: {r: 1, g: 0, b: 0, a: 1}
   leftImage: {fileID: 28801911}
@@ -4735,7 +4736,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hb: {fileID: 1693496135}
-  holdKey: 117
+  secretItem: {fileID: 0}
+  holdKey: 323
 --- !u!4 &2073534797 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6360514924437934094, guid: ce72ad50042761644a977b47f146428f, type: 3}

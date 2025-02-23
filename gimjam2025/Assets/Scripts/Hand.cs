@@ -6,10 +6,14 @@ public class Hand : MonoBehaviour
 {
     Rigidbody rigidBody;
     public Transform heldItem { get; private set; }
+    public Animator handAnimator;
     public Transform hb;
+    public SecretItem secretItem;
     Transform holdableItem;
+    public HandType handType;
     [SerializeField] KeyCode holdKey = KeyCode.E;
-    bool isHoldable = false;
+    public enum HandType { Left, Right }
+    bool isHoldable = false, isSecretHoldable = false;
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -22,11 +26,19 @@ public class Hand : MonoBehaviour
             isHoldable = true;
             holdableItem = hitTransform;
         }
+        else if (hitTransform.CompareTag("Secret"))
+        {
+            Debug.Log("Touching Secret");
+            //secretItem.TouchingSecret();
+            isSecretHoldable = true;
+            holdableItem = hitTransform;
+        }
     }
     void OnTriggerExit(Collider collision)
     {
         holdableItem = null;
         isHoldable = false;
+        isSecretHoldable = false;
     }
     void Update()
     {
@@ -37,16 +49,23 @@ public class Hand : MonoBehaviour
     }
     public void Hold()
     {
-
-        if (!isHoldable || holdableItem == null) return;
-        heldItem = holdableItem;
-        heldItem.GetComponent<Attachment>().Hold(this);
-        heldItem.SetParent(hb);
-        heldItem.GetComponent<Rigidbody>().isKinematic = true;
-        heldItem.GetComponent<Rigidbody>().useGravity = false;
+        handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", true);
+        if (isSecretHoldable)
+        {
+            secretItem.TouchingSecret();
+        }
+        else
+        {
+            if (!isHoldable || holdableItem == null) return;
+            heldItem = holdableItem;
+            heldItem.SetParent(hb);
+            heldItem.GetComponent<Rigidbody>().isKinematic = true;
+            heldItem.GetComponent<Rigidbody>().useGravity = false;
+        }
     }
     void Release()
     {
+        handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", false);
         if (heldItem == null) return;
         heldItem.GetComponent<Attachment>().Release();
         heldItem.SetParent(null);
