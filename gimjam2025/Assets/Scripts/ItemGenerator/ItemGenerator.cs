@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class ItemGenerator : MonoBehaviour
         public List<GameObject> items = new List<GameObject>();
         public int maxItems = 2;
         public float itemSpacing = 1f;
-        internal string name;
+        public ItemManager.Direction direction;
     }
     public List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
     public static ItemGenerator instance { get; private set; }
@@ -28,7 +29,7 @@ public class ItemGenerator : MonoBehaviour
 
         conveyorTrackers.Add(new ConveyorTracker
         {
-            name = "Left",
+            direction = ItemManager.Direction.Left,
             spawnPoint = leftSpawn,
             maxItems = 2,
             itemSpacing = 1f
@@ -36,7 +37,7 @@ public class ItemGenerator : MonoBehaviour
 
         conveyorTrackers.Add(new ConveyorTracker
         {
-            name = "Right",
+            direction = ItemManager.Direction.Right,
             spawnPoint = rightSpawn,
             maxItems = 2,
             itemSpacing = 1f
@@ -71,10 +72,8 @@ public class ItemGenerator : MonoBehaviour
 
     private void TrySpawnItem()
     {
-        for (int i = 0; i < 2; i++)
+        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
         {
-            ConveyorTracker conveyorTracker = conveyorTrackers[i];
-
             {
                 conveyorTracker.items.RemoveAll(item => item == null);
                 if (conveyorTracker.items.Count < conveyorTracker.maxItems)
@@ -94,17 +93,21 @@ public class ItemGenerator : MonoBehaviour
                     }
                     if (canSpawn)
                     {
-                        SpawnItem(conveyorTracker);
-                        return;
+                        Debug.Log("can spawn");
+                        ItemManager.ItemType item = ItemManager.Instance.GetNextItemPrefab(conveyorTracker.direction);
+                        if (item == null) continue;
+                        Debug.Log("Spawning item: " + item.prefab.name);
+                        SpawnItem(conveyorTracker, item.prefab);
+                        continue;
                     }
+                    else Debug.Log("cant spawn");
                 }
             }
         }
     }
-    private void SpawnItem(ConveyorTracker conveyorTracker)
+    private void SpawnItem(ConveyorTracker conveyorTracker, GameObject prefabToSpawn)
     {
         Debug.Log("Spawning item");
-        GameObject prefabToSpawn = ItemManager.Instance.GetNextItemPrefab();
         if (prefabToSpawn == null) return;
 
         // Spawn position with fixed height
@@ -132,5 +135,7 @@ public class ItemGenerator : MonoBehaviour
         bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
 
         itemController.Initialize(isMovingRight);
+
+        ItemManager.Instance.RemoveFromQueue(conveyorTracker.direction);
     }
 }

@@ -10,8 +10,6 @@ public class Holdable : MonoBehaviour
         if (GetComponent<Rigidbody>() == null) { gameObject.AddComponent<Rigidbody>(); }
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = false;
-        rigidBody.drag = 200;
-        rigidBody.angularDrag = 200;
         rigidBody.constraints = RigidbodyConstraints.FreezePositionY;
         gameObject.tag = "Holdable";
     }

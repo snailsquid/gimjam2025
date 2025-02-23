@@ -1,12 +1,8 @@
 {
-  "itemRaws": [
-    {
-      "itemName": "BlueSphere",
-      "initialCount": 2
-    },
-    {
-      "itemName": "RedCube",
-      "initialCount": 1
-    }
+  "left": [
+    "BlueSphere",
+    "RedCube"
+  ],
+  "right":[
   ]
 }

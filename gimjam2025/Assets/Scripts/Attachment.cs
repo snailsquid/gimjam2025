@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 public class Attachment : MonoBehaviour
 {
-    [SerializeField] public string uniqueKey;
+    [NonSerialized] public string uniqueKey;
     public List<AttachmentPoint> attachmentPoints = new List<AttachmentPoint>();
     public bool isHeld = false;
     public bool isHead = false;
@@ -16,6 +17,7 @@ public class Attachment : MonoBehaviour
     public Hand hand;
     public string attachmentKey;
     Vector3 positionOffset;
+    Rigidbody rigidBody;
     Quaternion rotationOffset;
     public AttachmentData GetData()
     {
@@ -27,7 +29,9 @@ public class Attachment : MonoBehaviour
     }
     void Start()
     {
+        uniqueKey = transform.name;
         InitPoints();
+        rigidBody = GetComponent<Rigidbody>();
     }
     public void AttachTo(Attachment attachment, AttachmentPoint previousAttachmentPoint = null, int previousDepth = 0)
     {
@@ -117,6 +121,8 @@ public class Attachment : MonoBehaviour
         {
             this.hand = hand;
             isHeld = true;
+            rigidBody.drag = 200;
+            rigidBody.angularDrag = 200;
             AttachTo(this);
         }
     }
@@ -124,6 +130,9 @@ public class Attachment : MonoBehaviour
     {
         isHeld = false;
         hand = null;
+    }
+    public void OutConveyor()
+    {
     }
     void InitPoints()
     {

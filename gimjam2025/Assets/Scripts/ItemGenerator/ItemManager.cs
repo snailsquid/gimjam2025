@@ -6,25 +6,30 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using System;
+using System.Net.Mail;
 
 public class ItemManager : MonoBehaviour
 {
     [System.Serializable]
-    private class ItemRaw
+    public class ItemRawConveyor
     {
-        public string itemName;
-        public int initialCount;
+        public string[] left, right;
     }
-    private class ItemRaws { public ItemRaw[] itemRaws; }
+    public enum Direction
+    {
+        Left,
+        Right
+    }
     public class ItemType
     {
         public string itemName;
         public GameObject prefab;
-        public int initialCount;
+        public Direction direction;
     }
     public int level = 1;
     public List<ItemType> availableItems;
-    private LinkedList<ItemType> respawnQueue = new LinkedList<ItemType>();
+    private LinkedList<ItemType> leftRespawn = new LinkedList<ItemType>();
+    private LinkedList<ItemType> rightRespawn = new LinkedList<ItemType>();
 
     private static ItemManager instance;
     public static ItemManager Instance
@@ -45,41 +50,73 @@ public class ItemManager : MonoBehaviour
 
         InitializeRespawnQueue(level);
     }
-
+    public void RemoveFromQueue(Direction direction)
+    {
+        LinkedList<ItemType> respawnQueue = direction == Direction.Left ? leftRespawn : rightRespawn;
+        respawnQueue.RemoveFirst();
+    }
     private void InitializeRespawnQueue(int level)
     {
         availableItems = new List<ItemType>();
+        Debug.Log("playing level " + level);
         string jsonFile = new StreamReader("Assets/Levels/" + level.ToString() + ".json").ReadToEnd();
-        ItemRaws items = JsonUtility.FromJson<ItemRaws>(jsonFile);
-
-        foreach (ItemRaw item in items.itemRaws)
+        ItemRawConveyor conveyorDirections = JsonUtility.FromJson<ItemRawConveyor>(jsonFile);
+        Debug.Log(jsonFile);
+        AddToConveyorQueue(leftRespawn, conveyorDirections.left, Direction.Left);
+        AddToConveyorQueue(rightRespawn, conveyorDirections.right, Direction.Right);
+        // foreach (KeyValuePair<string, List<ItemRaw>> conveyorDirection in conveyorDirections)
+        // {
+        //     Debug.Log(conveyorDirection.Key);
+        //     Direction direction = conveyorDirection.Key == "Left" ? Direction.Left : Direction.Right;
+        //     foreach (ItemRaw item in conveyorDirection.Value)
+        //     {
+        //         GameObject prefab = PrefabUtility.LoadPrefabContents("Assets/Prefabs/Items/" + item.itemName + ".prefab");
+        //         ItemType itemType = new()
+        //         {
+        //             itemName = item.itemName,
+        //             initialCount = item.initialCount,
+        //             direction = direction,
+        //             prefab = prefab,
+        //         };
+        //         availableItems.Add(itemType);
+        //         if (direction == Direction.Left)
+        //         {
+        //             leftRespawn.AddFirst(itemType);
+        //         }
+        //         else
+        //         {
+        //             rightRespawn.AddFirst(itemType);
+        //         }
+        //     }
+        // }
+    }
+    void AddToConveyorQueue(LinkedList<ItemType> respawnQueue, string[] items, Direction direction)
+    {
+        foreach (string item in items)
         {
+            Debug.Log(item);
             ItemType itemType = new()
             {
-                itemName = item.itemName,
-                initialCount = item.initialCount,
-                prefab = PrefabUtility.LoadPrefabContents("Assets/Prefabs/Items/" + item.itemName + ".prefab")
+                itemName = item,
+                direction = direction,
+                prefab = PrefabUtility.LoadPrefabContents("Assets/Prefabs/Items/" + item + ".prefab"),
             };
             availableItems.Add(itemType);
-            respawnQueue.AddFirst(itemType);
+            respawnQueue.AddLast(itemType);
         }
     }
 
-    public GameObject GetNextItemPrefab()
+    public ItemType GetNextItemPrefab(Direction direction)
     {
+        Debug.Log("Getting next item prefab for " + direction);
+        LinkedList<ItemType> respawnQueue = direction == Direction.Left ? leftRespawn : rightRespawn;
+        foreach (ItemType item in respawnQueue)
+        {
+            Debug.Log("in " + direction + " respawn there's " + item.itemName);
+        }
         if (respawnQueue.Count > 0)
         {
-            if (respawnQueue.First().initialCount <= 1)
-            {
-                ItemType nextItem = respawnQueue.First();
-                respawnQueue.RemoveFirst();
-                return nextItem.prefab;
-            }
-            else
-            {
-                respawnQueue.First().initialCount--;
-                return respawnQueue.First().prefab;
-            }
+            return respawnQueue.First();
         }
         return null;
     }
@@ -87,20 +124,21 @@ public class ItemManager : MonoBehaviour
     public void AddToRespawnQueue(string itemName)
     {
         Debug.Log("Adding " + itemName + " to respawn queue");
-        
+
         ItemType itemData = availableItems.Find(item => item.itemName == itemName);
 
+        Debug.Log(itemData);
         ItemType newItem = new()
         {
             itemName = itemData.itemName,
             prefab = itemData.prefab,
-            initialCount = 1
+            direction = itemData.direction,
         };
-        
+
+        LinkedList<ItemType> respawnQueue = itemData.direction == Direction.Left ? leftRespawn : rightRespawn;
         respawnQueue.AddFirst(newItem);
         foreach (ItemType item in respawnQueue)
         {
-            Debug.Log(item.itemName + " " + item.initialCount);
         }
     }
 }

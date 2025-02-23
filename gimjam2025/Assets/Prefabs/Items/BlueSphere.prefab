@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6375100885872861596}
   - component: {fileID: 8368779679907937355}
   - component: {fileID: -8499981485785555151}
+  - component: {fileID: 214103944085649455}
   m_Layer: 0
   m_Name: BlueSphere
   m_TagString: Item
@@ -118,3 +119,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07e13eb4f65f7264db81b9c479fd55ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &214103944085649455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315615849426384771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbabab16d5144aa43bd12767182a02ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachmentPoints: []
+  isHeld: 0
+  isHead: 0
+  depth: 100000
+  hand: {fileID: 0}
+  attachmentKey: 

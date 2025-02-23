@@ -10,6 +10,8 @@ public class Level
     public bool isUnlocked;
     public string displayText;
     public GameObject prefab;
+    public List<string> queueLeft, queueRight;
+    public List<ItemManager.ItemType> availableItems;
 
     public Level(string scene, Image image, bool isUnlocked, string displayText, GameObject prefab)
     {

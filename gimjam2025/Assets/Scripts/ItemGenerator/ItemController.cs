@@ -17,6 +17,13 @@ public class ItemController : MonoBehaviour
         conveyorTrackers = FindObjectOfType<ItemGenerator>().conveyorTrackers;
     }
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+        {
+        }
+    }
     public void Initialize(bool moveRight)
     {
         movingRight = moveRight;
@@ -36,8 +43,10 @@ public class ItemController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Conveyor"))
         {
+            Debug.Log("Exiting conveyor");
             rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
             onConveyor = false;
+            GetComponent<Attachment>().OutConveyor();
         }
     }
     private void FixedUpdate()
