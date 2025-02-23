@@ -7,9 +7,11 @@ public class SceneHandler : MonoBehaviour
     public void gotoReset()
     {
         SceneManager.LoadScene("ItemGenerateScene");
+        Debug.Log("Restart it's working");
     }
     public void gotoMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Debug.Log("Main Menu it's working");
     }
 }
