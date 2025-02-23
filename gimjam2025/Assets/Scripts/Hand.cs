@@ -6,10 +6,13 @@ public class Hand : MonoBehaviour
 {
     Rigidbody rigidBody;
     public Transform heldItem { get; private set; }
+    public Animator handAnimator;
     public Transform hb;
     public SecretItem secretItem;
     Transform holdableItem;
+    public HandType handType;
     [SerializeField] KeyCode holdKey = KeyCode.E;
+    public enum HandType { Left, Right }
     bool isHoldable = false, isSecretHoldable = false;
     void Start()
     {
@@ -25,7 +28,7 @@ public class Hand : MonoBehaviour
             isHoldable = true;
             holdableItem = hitTransform;
         }
-        else if(hitTransform.CompareTag("Secret"))
+        else if (hitTransform.CompareTag("Secret"))
         {
             Debug.Log("Touching Secret");
             //secretItem.TouchingSecret();
@@ -48,6 +51,7 @@ public class Hand : MonoBehaviour
     }
     void Hold()
     {
+        handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", true);
         if (isSecretHoldable)
         {
             secretItem.TouchingSecret();
@@ -59,10 +63,11 @@ public class Hand : MonoBehaviour
             heldItem.SetParent(hb);
             heldItem.GetComponent<Rigidbody>().isKinematic = true;
             heldItem.GetComponent<Rigidbody>().useGravity = false;
-        }  
+        }
     }
     void Release()
     {
+        handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", false);
         if (heldItem == null) return;
         heldItem.SetParent(null);
         heldItem.GetComponent<Rigidbody>().isKinematic = false;
