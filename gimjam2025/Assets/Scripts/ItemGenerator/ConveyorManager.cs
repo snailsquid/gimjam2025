@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
-public class ConveyorSetup : MonoBehaviour
+public class ConveyorManager : MonoBehaviour
 {
-    public static ItemGenerator instance { get; private set; }
     public float conveyorWidth = 10f;
     public float conveyorHeight = 1f;
     private ItemGenerator itemGenerator;
     public GameObject conveyorPrefab;
     private Vector3 conveyorPosition = new Vector3(3, 0.75f, -7);
+    public ConveyorManager instance { get; private set; }
 
     void Awake()
     {
@@ -36,13 +36,14 @@ public class ConveyorSetup : MonoBehaviour
         GameObject conveyor = Instantiate(conveyorPrefab);
         conveyor.name = name;
         conveyor.transform.position = position;
-
+        conveyor.tag = "Conveyor";
+        
         // Create spawn point
         GameObject spawnPoint = new GameObject(name + "SpawnPoint");
         spawnPoint.transform.parent = conveyor.transform;
         spawnPoint.transform.position = new Vector3(
             isLeft ? position.x - 1 : position.x + 1,
-            position.y + 0.5f,
+            position.y + .25f,
             position.z
         );
 

@@ -5,65 +5,77 @@ using static ItemGenerator;
 
 public class ItemController : MonoBehaviour
 {
-    private float speed = 5f;
+    private readonly float speed = 1f;
+    public int conveyorSpeed = 3;
     private bool movingRight;
-    private float targetX = 0.0f;
-    private const float STOP_THRESHOLD = 1.5f;
-    private bool shouldMove = true;
+    private readonly float targetX = 0.0f;
+    private bool onConveyor = true;
     private Rigidbody rb;
     private List<ConveyorTracker> conveyorTrackers;
-
     public void Awake()
     {
         conveyorTrackers = FindObjectOfType<ItemGenerator>().conveyorTrackers;
     }
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+        {
+        }
+    }
     public void Initialize(bool moveRight)
     {
         movingRight = moveRight;
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+        rb.constraints = RigidbodyConstraints.FreezePositionZ;
     }
 
-    private void OnCollisionStay(Collision collision)
+    public void OnDestroy()
     {
-        shouldMove = false;
-        rb.velocity = Vector3.zero;
+        Debug.Log("Destroying " + gameObject.name);
+        ItemManager.Instance.AddToRespawnQueue(gameObject.name.Replace("(Clone)", ""));
     }
 
+    public void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Conveyor"))
+        {
+            Debug.Log("Exiting conveyor");
+            rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
+            onConveyor = false;
+            GetComponent<Attachment>().OutConveyor();
+        }
+    }
     private void FixedUpdate()
     {
-        if (!shouldMove) return;
-
-        float currentX = rb.position.x;
-        float distanceToTarget = Mathf.Abs(currentX - targetX);
-
-        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
+        if (onConveyor)
         {
-            if (distanceToTarget > STOP_THRESHOLD)
+            rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionZ;
+            float currentX = rb.position.x;
+            foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
             {
-
                 if (movingRight)
                 {
                     if (currentX < targetX)
                     {
-                        rb.AddForce(Vector3.right * speed);
+                        rb.AddForce(Vector3.right * speed * conveyorSpeed);
                     }
                 }
                 else
                 {
                     if (currentX > targetX)
                     {
-                        rb.AddForce(Vector3.left * speed);
+                        rb.AddForce(Vector3.left * speed * conveyorSpeed);
                     }
                 }
             }
-            else
-            {
-                rb.velocity = Vector3.zero;
-            }
+        }
+        else
+        {
+            rb.constraints = RigidbodyConstraints.None;
         }
     }
 }

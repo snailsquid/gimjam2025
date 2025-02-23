@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,13 +11,15 @@ public class ItemGenerator : MonoBehaviour
         public Transform spawnPoint;
         public List<GameObject> items = new List<GameObject>();
         public int maxItems = 2;
-        public float itemSpacing = 2f;
+        public float itemSpacing = 1f;
+        public ItemManager.Direction direction;
     }
     public List<ConveyorTracker> conveyorTrackers = new List<ConveyorTracker>();
     public static ItemGenerator instance { get; private set; }
     public GameObject[] spawnPoints;
     public GameObject[] itemPrefabs;
-    public float spawnInterval = 2.0f;
+    private ItemManager itemManager;
+    public float spawnInterval = 1f;
     private float timer;
     private bool isInitialized;
 
@@ -25,16 +29,18 @@ public class ItemGenerator : MonoBehaviour
 
         conveyorTrackers.Add(new ConveyorTracker
         {
+            direction = ItemManager.Direction.Left,
             spawnPoint = leftSpawn,
             maxItems = 2,
-            itemSpacing = 2f
+            itemSpacing = 1f
         });
 
         conveyorTrackers.Add(new ConveyorTracker
         {
+            direction = ItemManager.Direction.Right,
             spawnPoint = rightSpawn,
             maxItems = 2,
-            itemSpacing = 2f
+            itemSpacing = 1f
         });
 
         isInitialized = true;
@@ -68,33 +74,41 @@ public class ItemGenerator : MonoBehaviour
     {
         foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
         {
-            conveyorTracker.items.RemoveAll(item => item == null);
-            if (conveyorTracker.items.Count < conveyorTracker.maxItems)
             {
-                bool canSpawn = true;
-
-                if (conveyorTracker.items.Count > 0 && conveyorTracker.items[conveyorTracker.items.Count - 1] != null)
+                conveyorTracker.items.RemoveAll(item => item == null);
+                if (conveyorTracker.items.Count < conveyorTracker.maxItems)
                 {
-                    float distanceFromLast = Mathf.Abs(
-                        conveyorTracker.items[conveyorTracker.items.Count - 1].transform.position.x - conveyorTracker.spawnPoint.position.x
-                    );
+                    bool canSpawn = true;
 
-                    if (distanceFromLast < conveyorTracker.itemSpacing)
+                    if (conveyorTracker.items.Count > 0 && conveyorTracker.items[conveyorTracker.items.Count - 1] != null)
                     {
-                        canSpawn = false;
+                        float distanceFromLast = Mathf.Abs(
+                            conveyorTracker.items[conveyorTracker.items.Count - 1].transform.position.x - conveyorTracker.spawnPoint.position.x
+                        );
+
+                        if (distanceFromLast < conveyorTracker.itemSpacing)
+                        {
+                            canSpawn = false;
+                        }
                     }
-                }
-                if (canSpawn)
-                {
-                    SpawnItem(conveyorTracker);
+                    if (canSpawn)
+                    {
+                        Debug.Log("can spawn");
+                        ItemManager.ItemType item = ItemManager.Instance.GetNextItemPrefab(conveyorTracker.direction);
+                        if (item == null) continue;
+                        Debug.Log("Spawning item: " + item.prefab.name);
+                        SpawnItem(conveyorTracker, item.prefab);
+                        continue;
+                    }
+                    else Debug.Log("cant spawn");
                 }
             }
         }
     }
-    private void SpawnItem(ConveyorTracker conveyorTracker)
+    private void SpawnItem(ConveyorTracker conveyorTracker, GameObject prefabToSpawn)
     {
-        // Random item selection
-        GameObject prefabToSpawn = itemPrefabs[Random.Range(0, itemPrefabs.Length)];
+        Debug.Log("Spawning item");
+        if (prefabToSpawn == null) return;
 
         // Spawn position with fixed height
         Vector3 spawnPosition = new Vector3(
@@ -119,6 +133,9 @@ public class ItemGenerator : MonoBehaviour
         // Add ItemController component
         ItemController itemController = newItem.AddComponent<ItemController>();
         bool isMovingRight = conveyorTracker.spawnPoint.position.x < 0;
+
         itemController.Initialize(isMovingRight);
+
+        ItemManager.Instance.RemoveFromQueue(conveyorTracker.direction);
     }
 }
