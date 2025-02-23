@@ -11,7 +11,7 @@ public class Holdable : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = false;
         rigidBody.constraints = RigidbodyConstraints.FreezePositionY;
-        //gameObject.tag = "Holdable";
+        gameObject.tag = "Holdable";
     }
     // void OnCollisionEnter(Collision collision)
     // {
