@@ -18,13 +18,11 @@ public class Hand : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
     }
-    void OnTriggerEnter(Collider collision)
+    void OnTriggerStay(Collider collision)
     {
         Transform hitTransform = collision.gameObject.transform;
-        Debug.Log(hitTransform.tag);
         if (hitTransform.CompareTag("Holdable"))
         {
-            Debug.Log("Touching");
             isHoldable = true;
             holdableItem = hitTransform;
         }
@@ -49,7 +47,7 @@ public class Hand : MonoBehaviour
         if (Input.GetKeyUp(holdKey))
             Release();
     }
-    void Hold()
+    public void Hold()
     {
         handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", true);
         if (isSecretHoldable)
@@ -69,6 +67,7 @@ public class Hand : MonoBehaviour
     {
         handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", false);
         if (heldItem == null) return;
+        heldItem.GetComponent<Attachment>().Release();
         heldItem.SetParent(null);
         heldItem.GetComponent<Rigidbody>().isKinematic = false;
         heldItem.GetComponent<Rigidbody>().useGravity = true;
