@@ -7,6 +7,12 @@ TagManager:
   - Item
   - Conveyor
   - Holdable
+  - Attachment
+  - AttachmentPoint
+  - CompositeItem
+  - Hand
+  - Holdable
+  - Left
   layers:
   - Default
   - TransparentFX
@@ -17,6 +23,7 @@ TagManager:
   - Conveyor
   - Item
   - 3D layer
+  - Hand
   - 
   - 
   - 

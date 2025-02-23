@@ -7,11 +7,13 @@ public class Holdable : MonoBehaviour
     Rigidbody rigidBody;
     void Start()
     {
-        if (GetComponent<Rigidbody>() == null) { Debug.LogError("Add rigidbody to " + gameObject.name); return; }
+        if (GetComponent<Rigidbody>() == null) { gameObject.AddComponent<Rigidbody>(); }
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = false;
         rigidBody.drag = 200;
         rigidBody.angularDrag = 200;
+        rigidBody.constraints = RigidbodyConstraints.FreezePositionY;
+        gameObject.tag = "Holdable";
     }
     // void OnCollisionEnter(Collision collision)
     // {
