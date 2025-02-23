@@ -21,14 +21,16 @@ public class LevelSelectionManager : MonoBehaviour
     }
 
     public GameObject levelButton;
+    public GameObject levelImage3D;
     public List<Level> levels;
     [SerializeField] private List<Image> image;
     [SerializeField] private List<GameObject> image3D;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelection;
     [SerializeField] private Transform content;
-    [SerializeField] private Transform UI3D;
+    [SerializeField] private Transform contentImage3D;
     [SerializeField] private LoadingScreen loadingScreen;
+    private int xPos;
 
     void Start()
     {
@@ -63,24 +65,45 @@ public class LevelSelectionManager : MonoBehaviour
 
     public void UpdateLevels()
     {
-    foreach(Transform child in content)
+    xPos = 0;
+    foreach(Transform child1 in content)
     {
-        Destroy(child.gameObject);
+        Destroy(child1.gameObject);
+    }
+    foreach(Transform child2 in contentImage3D)
+    {
+        Destroy(child2.gameObject);
     }
     foreach(Level level in levels)
     {
         GameObject newObject = Instantiate(levelButton);
         newObject.transform.SetParent(content);
+
         TMP_Text text = newObject.transform.GetChild(1).GetComponent<TMP_Text>();
         text.text = level.displayText;
+
         Button button = newObject.GetComponent<Button>();
         button.onClick.AddListener(()=>{
             loadingScreen.LoadLevelBtn(level.scene);
         });
+
         if(!level.isUnlocked)
         {
             button.interactable = false;
         }
+
+        GameObject newImage3D = Instantiate(levelImage3D, new Vector3(xPos, 0, 0), Quaternion.identity);
+        newImage3D.transform.SetParent(contentImage3D);
+
+        GameObject newImage3DObject = Instantiate(level.prefab, new Vector3(xPos, 0, 0), Quaternion.identity);
+        newImage3DObject.transform.SetParent(newImage3D.transform);
+        xPos -= 20;
+
+        Camera cameraToRender = newImage3D.transform.GetChild(0).GetComponent<Camera>();
+        RenderTexture renderTexture = new RenderTexture(256,256,0);
+        cameraToRender.targetTexture = renderTexture;
+        RawImage targetRawImage = button.transform.GetChild(0).GetComponent<RawImage>();
+        targetRawImage.texture = renderTexture;
     }
     }
 }
