@@ -53,7 +53,7 @@ public class ConveyorManager : MonoBehaviour
         spawnPoint.transform.parent = conveyor.transform;
         spawnPoint.transform.position = new Vector3(
             isLeft ? position.x - 1 : position.x + 1,
-            position.y + 1.25f,
+            position.y + .65f,
             position.z
         );
 
