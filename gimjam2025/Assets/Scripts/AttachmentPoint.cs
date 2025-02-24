@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class AttachmentPoint : MonoBehaviour
 {
-    [SerializeField] float snapDistance = 0.1f, snapRotation = 10f;
+    float snapDistance = 0.3f, snapRotation = 16f;
     [SerializeField] public AttachmentType type;
     public AttachmentPoint attachedPoint { get; private set; }
     public Attachment attachment { get; private set; }
