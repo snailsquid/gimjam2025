@@ -5,9 +5,18 @@ using UnityEngine.UI;
 
 public class Level
 {
-    [SerializeField] private string scene;
-    [SerializeField] private Image image;
-    [SerializeField] private bool isUnlocked;
-    [SerializeField] private string displayText;
-    [SerializeField] private GameObject prefab;
+    public string scene;
+    public Image image;
+    public bool isUnlocked;
+    public string displayText;
+    public GameObject prefab;
+
+    public Level(string scene, Image image, bool isUnlocked, string displayText, GameObject prefab)
+    {
+        this.scene = scene;
+        this.image = image;
+        this.isUnlocked = isUnlocked;
+        this.displayText = displayText;
+        this.prefab = prefab;
+    }
 }

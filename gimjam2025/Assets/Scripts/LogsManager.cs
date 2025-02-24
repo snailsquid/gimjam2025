@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class LogsManager : MonoBehaviour
 {
-    public static LogsManager instance {get; private set;}
+    public static LogsManager instance { get; private set; }
 
     private void Awake()
     {
@@ -20,19 +21,56 @@ public class LogsManager : MonoBehaviour
         }
     }
 
+    public List<Log> logs;
+    [SerializeField] private Transform content;
+    [SerializeField] private GameObject logButton;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject logMenu;
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] Sprite LogEnableNormal, LogEnableHover, LogDisableNormal, LogDisableHover;
+    [SerializeField] Button logMenuButton;
+    void Start()
+    {
+        logs = new List<Log>
+        {
+            new Log("Title 1", "1. Lorem ipsum"),
+            new Log("Title 2", "2. Lorem ipsum"),
+            new Log("Title 3", "3. Lorem ipsum"),
+            new Log("Title 4", "4. Lorem ipsum"),
+            new Log("Title 5", "5. Lorem ipsum")
+        };
+
+        UpdateLogs();
+    }
 
     public void Logs()
     {
         mainMenu.SetActive(false);
         logMenu.SetActive(true);
+        UpdateLogs();
     }
 
-    public void DisplayTitleContent(string title_)          
-    {                                                       
+    public void EnableButton(bool enable)
+    {
+        SpriteState spriteState = new SpriteState();
+
+        if (enable)
+        {
+            spriteState = new SpriteState { highlightedSprite = LogEnableHover };
+
+            logMenu.GetComponent<Image>().sprite = LogEnableNormal;
+        }
+        else
+        {
+            spriteState = new SpriteState { highlightedSprite = LogDisableHover };
+
+            logMenu.GetComponent<Image>().sprite = LogDisableNormal;
+        }
+        logMenuButton.spriteState = spriteState;
+    }
+    public void DisplayTitleContent(string title_)
+    {
         title.text = title_;
     }
     public void DisplayDescriptionContent(string description_)
@@ -40,4 +78,25 @@ public class LogsManager : MonoBehaviour
         description.text = description_;
     }
 
+    public void UpdateLogs()
+    {
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Log log in logs)
+        {
+            GameObject newObject = Instantiate(logButton);
+            newObject.transform.SetParent(content);
+            newObject.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+            TMP_Text text = newObject.transform.GetChild(0).GetComponent<TMP_Text>();
+            text.text = log.title;
+            Button button = newObject.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                DisplayTitleContent(log.title);
+                DisplayDescriptionContent(log.description);
+            });
+        }
+    }
 }
