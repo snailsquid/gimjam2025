@@ -121,14 +121,6 @@ public class ItemGenerator : MonoBehaviour
         conveyorTracker.items.Add(newItem);
 
         // Set tag to Holdable to the first item on the conveyor
-        if (conveyorTracker.items.Count == 0)
-        {
-            newItem.tag = "Holdable";
-        }
-        else
-        {
-            conveyorTracker.items[0].tag = "Holdable";
-        }
 
         // Add ItemController component
         ItemController itemController = newItem.AddComponent<ItemController>();

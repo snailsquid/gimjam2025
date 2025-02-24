@@ -58,16 +58,24 @@ public class Hand : MonoBehaviour
         heldItem = holdableItem;
         heldItem.SetParent(hb);
         Attachment attachment = heldItem.GetComponent<Attachment>();
-        attachment.Hold(this);
+        if (attachment != null)
+            attachment.Hold(this);
+
     }
     void Release()
     {
         handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", false);
         if (heldItem == null) return;
+        Attachment attachment = heldItem.GetComponent<Attachment>();
+        Transform otherHeld = otherHand.heldItem;
         if (otherHand.heldItem == null)
-            heldItem.GetComponent<Attachment>().RippleRelease();
+            attachment.RippleRelease();
+        else if (otherHand.heldItem.GetComponent<Attachment>() != null && otherHand.heldItem.GetComponent<Attachment>() == attachment.FindHeld())
+        {
+            attachment.ReleaseHand();
+        }
         else
-            heldItem.GetComponent<Attachment>().ReleaseHand();
+            attachment.Release();
         if (heldItem.parent == null || heldItem.parent.GetComponent<Attachment>() == null)
             heldItem.SetParent(null);
         heldItem = null;

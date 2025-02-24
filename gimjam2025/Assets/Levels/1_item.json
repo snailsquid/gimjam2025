@@ -1,1 +1,1 @@
-{"content":[{"key":"Test1(Clone)","keys":[{"point":"AttachmentPoint0","attached":"Test2(Clone)"}]},{"key":"Test2(Clone)","keys":[]}]}
+{"content":[{"key":"Test1(Clone)","keys":[]},{"key":"Test2(Clone)","keys":[{"point":"AttachmentPoint0","attached":"Test1(Clone)"}]}]}

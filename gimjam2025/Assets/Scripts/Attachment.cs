@@ -31,6 +31,7 @@ public class Attachment : MonoBehaviour
     {
         uniqueKey = transform.name;
         InitPoints();
+        if (GetComponent<Rigidbody>() == null) { gameObject.AddComponent<Rigidbody>(); }
         rigidBody = GetComponent<Rigidbody>();
     }
     public void AttachTo(Attachment attachment, AttachmentPoint previousAttachmentPoint = null, int previousDepth = 0)
@@ -58,6 +59,7 @@ public class Attachment : MonoBehaviour
                 transform.SetParent(attachment.transform);
                 isHeld = false;
                 hand = null;
+                Debug.Log(rigidBody);
                 rigidBody.drag = 200;
                 rigidBody.angularDrag = 200;
                 rigidBody.useGravity = false;
@@ -85,7 +87,7 @@ public class Attachment : MonoBehaviour
         isHead = true;
         return this;
     }
-    Attachment FindHeld(AttachmentPoint previousAttachmentPoint = null)
+    public Attachment FindHeld(AttachmentPoint previousAttachmentPoint = null)
     {
         if (isHeld) { Debug.Log("self is held"); return this; }
         foreach (AttachmentPoint attachmentPoint in attachmentPoints)

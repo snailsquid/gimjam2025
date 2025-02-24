@@ -66,12 +66,12 @@ public class LevelManagerEditor : Editor
             };
             for (int i = 0; i < levelManager.leftConveyor.Count; i++)
             {
-                Attachment attachment = levelManager.leftConveyor[i].GetComponent<Attachment>();
+                Transform attachment = levelManager.leftConveyor[i].transform;
                 conveyorBelt.left[i] = attachment.name;
             }
             for (int i = 0; i < levelManager.rightConveyor.Count; i++)
             {
-                Attachment attachment = levelManager.rightConveyor[i].GetComponent<Attachment>();
+                Transform attachment = levelManager.rightConveyor[i].transform;
                 conveyorBelt.right[i] = attachment.name;
             }
             string json = JsonUtility.ToJson(conveyorBelt);

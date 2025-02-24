@@ -36,7 +36,8 @@ public class ItemController : MonoBehaviour
     public void OnDestroy()
     {
         Debug.Log("Destroying " + gameObject.name);
-        ItemManager.Instance.AddToRespawnQueue(gameObject.name.Replace("(Clone)", ""));
+        if (GetComponent<Attachment>() != null)
+            ItemManager.Instance.AddToRespawnQueue(gameObject.name.Replace("(Clone)", ""));
     }
 
     public void OnCollisionExit(Collision collision)
@@ -46,7 +47,6 @@ public class ItemController : MonoBehaviour
             Debug.Log("Exiting conveyor");
             rb.velocity = new Vector3(rb.velocity.x, -speed, 0);
             onConveyor = false;
-            GetComponent<Attachment>().OutConveyor();
         }
     }
     private void FixedUpdate()

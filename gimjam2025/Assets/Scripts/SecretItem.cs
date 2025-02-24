@@ -7,8 +7,10 @@ public class SecretItem : MonoBehaviour
     public string logPopupText;
     public int secretNumber;
     public float popupTime;
+    public float destroyHeight = -2f;
     void Start()
     {
+        gameObject.tag = "Secret";
     }
 
     public void TouchingSecret()
@@ -17,5 +19,12 @@ public class SecretItem : MonoBehaviour
         LogPopupScript.Instance.ShowPopup(logPopupText, popupTime);
         SecretManager.Instance.AddSecret(secretNumber);
         Destroy(gameObject);
+    }
+    private void Update()
+    {
+        if (transform.position.y < destroyHeight)
+        {
+            Destroy(gameObject);
+        }
     }
 }
