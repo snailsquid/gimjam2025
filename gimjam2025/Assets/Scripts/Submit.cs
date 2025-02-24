@@ -40,10 +40,14 @@ public class Submit : MonoBehaviour
         if (checking)
         {
             Debug.Log("You got the right thing");
+            TVManager.Instance.correct = true;
+            TVManager.Instance.tvState = TVManager.TVState.Submit;
         }
         else
         {
             Debug.Log("wrong");
+            TVManager.Instance.YouAreWrongWompWomp();
+
             LevelManager.instance.Restart();
         }
     }

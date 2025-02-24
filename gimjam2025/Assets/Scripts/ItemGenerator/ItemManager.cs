@@ -50,6 +50,10 @@ public class ItemManager : MonoBehaviour
 
         InitializeRespawnQueue(level);
     }
+    void Start()
+    {
+        level = LevelManager.instance.currentLevel;
+    }
     public void RemoveFromQueue(Direction direction)
     {
         LinkedList<ItemType> respawnQueue = direction == Direction.Left ? leftRespawn : rightRespawn;

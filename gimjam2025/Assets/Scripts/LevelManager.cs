@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public int currentLevel;
     public List<Level> levels;
     public static LevelManager instance { get; private set; }
     public List<GameObject> leftConveyor, rightConveyor;
@@ -25,6 +26,7 @@ public class LevelManager : MonoBehaviour
         else
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
     public void Restart()
@@ -39,8 +41,13 @@ public class LevelManager : MonoBehaviour
     }
     public bool IsSameWithLevel(AttachmentData.KeysListContainer keysListContainer)
     {
-        AttachmentData.KeysListContainer levelKeys = GetLevelItem(ItemManager.Instance.level);
-        return JsonUtility.ToJson(levelKeys) == JsonUtility.ToJson(levelKeys);
+        AttachmentData.KeysListContainer levelKeys = GetLevelItem(currentLevel);
+        Debug.Log("checking if same these :");
+        Debug.Log(JsonUtility.ToJson(keysListContainer));
+        Debug.Log(JsonUtility.ToJson(levelKeys));
+        bool same = JsonUtility.ToJson(keysListContainer) == JsonUtility.ToJson(levelKeys);
+        Debug.Log("it is infact : " + same);
+        return same;
     }
 }
 
