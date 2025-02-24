@@ -15,6 +15,9 @@ TagManager:
   - Left
   - Secret
   - SubmitingPoint
+  - Preview
+  - Tutorial
+  - Submit
   layers:
   - Default
   - TransparentFX
@@ -25,9 +28,9 @@ TagManager:
   - Conveyor
   - Item
   - 3D layer
+  - Capsule
+  - TV
   - Hand
-  - 
-  - 
   - 
   - 
   - 
