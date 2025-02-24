@@ -6,7 +6,7 @@ using static ItemGenerator;
 public class ItemController : MonoBehaviour
 {
     private readonly float speed = 1f;
-    public int conveyorSpeed = 3;
+    public float conveyorSpeed = 3f;
     private bool movingRight;
     public ItemManager.Direction direction;
     private readonly float targetX = 0.0f;
@@ -20,10 +20,9 @@ public class ItemController : MonoBehaviour
 
     void Start()
     {
+        conveyorSpeed = ConveyorManager.Instance.initialSpeed;
         rb = GetComponent<Rigidbody>();
-        foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
-        {
-        }
+        transform.AddComponent<DestroyOutOfBounds>();
     }
     public void Initialize(ItemManager.Direction direction)
     {
@@ -58,18 +57,18 @@ public class ItemController : MonoBehaviour
             float currentX = rb.position.x;
             foreach (ConveyorTracker conveyorTracker in conveyorTrackers)
             {
-                if (movingRight)
+                if (direction == ItemManager.Direction.Left)
                 {
                     if (currentX < targetX)
                     {
-                        rb.AddForce(Vector3.right * speed * conveyorSpeed);
+                        rb.velocity = Vector3.right * conveyorSpeed;
                     }
                 }
                 else
                 {
                     if (currentX > targetX)
                     {
-                        rb.AddForce(Vector3.left * speed * conveyorSpeed);
+                        rb.velocity = Vector3.left * conveyorSpeed;
                     }
                 }
             }

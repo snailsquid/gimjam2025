@@ -56,17 +56,16 @@ public class Hand : MonoBehaviour
         if (!isHoldable) return;
         heldItem = holdableItem;
         heldItem.SetParent(hb);
-        heldItem.GetComponent<Rigidbody>().isKinematic = true;
-        heldItem.GetComponent<Rigidbody>().useGravity = false;
+        Attachment attachment = heldItem.GetComponent<Attachment>();
+        attachment.Hold(this);
     }
     void Release()
     {
         handAnimator.SetBool((handType == HandType.Left ? "left" : "right") + " grab", false);
         if (heldItem == null) return;
         heldItem.GetComponent<Attachment>().Release();
-        heldItem.SetParent(null);
-        heldItem.GetComponent<Rigidbody>().isKinematic = false;
-        heldItem.GetComponent<Rigidbody>().useGravity = true;
+        if (heldItem.parent == null || heldItem.parent.GetComponent<Attachment>() == null)
+            heldItem.SetParent(null);
         heldItem = null;
     }
 }

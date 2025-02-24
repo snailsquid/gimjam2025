@@ -41,14 +41,14 @@ public class Attachment : MonoBehaviour
             depth = previousDepth + 1;
             if (joint == null)
             {
-
                 gameObject.AddComponent<FixedJoint>();
                 joint = gameObject.GetComponent<FixedJoint>();
             }
             if (attachment == this)
             {
-                Debug.Log("Setting " + name + " as parent");
-                transform.SetParent(hand != null ? hand.transform : null);
+                Transform container = hand != null ? hand.hb.transform : null;
+                Debug.Log("Setting " + name + " as parent to " + container);
+                transform.SetParent(container);
                 depth = 0;
                 Destroy(joint);
             }
@@ -119,17 +119,27 @@ public class Attachment : MonoBehaviour
     {
         if (this.hand == null)
         {
+            Debug.Log("hold");
             this.hand = hand;
             isHeld = true;
             rigidBody.drag = 200;
             rigidBody.angularDrag = 200;
+            rigidBody.useGravity = false;
             AttachTo(this);
         }
     }
     public void Release()
     {
+        Debug.Log("releasing " + name);
         isHeld = false;
         hand = null;
+        if (transform.parent == null || transform.parent.GetComponent<Attachment>() == null)
+        {
+
+            rigidBody.drag = 0;
+            rigidBody.angularDrag = 0.05f;
+            rigidBody.useGravity = true;
+        }
     }
     public void OutConveyor()
     {

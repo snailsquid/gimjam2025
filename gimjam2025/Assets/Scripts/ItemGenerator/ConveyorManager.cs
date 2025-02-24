@@ -12,11 +12,19 @@ public class ConveyorManager : MonoBehaviour
     public GameObject conveyorPrefab;
     public Transform conveyorPos;
     Vector3 conveyorPosition;
-    public ConveyorManager instance { get; private set; }
-
+    public float initialSpeed = 1f;
+    public static ConveyorManager Instance;
     void Awake()
     {
         itemGenerator = FindObjectOfType<ItemGenerator>();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
     }
     void Start()
     {

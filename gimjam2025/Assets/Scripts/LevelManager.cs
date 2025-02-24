@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance { get; private set; }
     public List<GameObject> leftConveyor, rightConveyor;
     public int levelJson;
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }
 
 [CustomEditor(typeof(LevelManager))]

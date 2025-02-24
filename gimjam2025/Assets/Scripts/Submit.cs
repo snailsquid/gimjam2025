@@ -9,29 +9,28 @@ public class Submit : MonoBehaviour
     public bool checking;
     void Start()
     {
-        
     }
     void Update()
     {
-        
+
     }
     void OnTriggerEnter(Collider other)
     {
         Transform hitTransform = other.gameObject.transform;
         GameObject objects = other.gameObject;
         Attachment attachment = other.GetComponent<Attachment>();
-        if(hitTransform.CompareTag("Holdable"))
+        if (hitTransform.CompareTag("Holdable"))
         {
             Debug.Log(gameObject);
             checking = attachment.EqualTo(attachmentPrefab);
             Submiting(objects);
-            
+
         }
     }
     void OnTriggerExit(Collider other)
     {
         Transform hitTransform = other.gameObject.transform;
-        if(hitTransform.CompareTag("Holdable"))
+        if (hitTransform.CompareTag("Holdable"))
         {
             Debug.Log(gameObject);
             checking = false;
@@ -39,16 +38,14 @@ public class Submit : MonoBehaviour
     }
     void Submiting(GameObject objects)
     {
-        if(checking)
+        if (checking)
         {
             Debug.Log("You got the right thing");
-            Destroy(objects);
-            checking = false;
         }
         else
         {
             Debug.Log("wrong");
-            //SceneManager.LoadScene("SubmitItem");
+            LevelManager.instance.Restart();
         }
     }
 }
