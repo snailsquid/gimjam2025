@@ -85,6 +85,11 @@ public class LogsManager : MonoBehaviour
 
     public void UpdateLogs()
     {
+        Debug.Log("Updating");
+        foreach (int number in SecretManager.Instance.foundSecret)
+        {
+            Debug.Log(number);
+        }
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);

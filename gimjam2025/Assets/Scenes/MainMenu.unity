@@ -96,8 +96,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 0bc8d9308e5206543a58d8ad115906c5, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: d815a14de566af34a963b9da0b751704, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1252,6 +1252,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd98cd7e32f67ba4fa283aa4a42f7347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  foundSecret: 01000000
+  logPopups:
+  - LOGS UNLOCKED, CHECK THE MAIN MENU
+  - NEW LOGS ACQUIRED
+  - NEW LOGS ACQUIRED
   isLogsUnlocked: 0
 --- !u!4 &626430932
 Transform:

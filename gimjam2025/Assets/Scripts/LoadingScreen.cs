@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScreen : MonoBehaviour
 {
-    
+
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private Slider loadingSlider;
@@ -21,7 +21,7 @@ public class LoadingScreen : MonoBehaviour
 
         scene = levelToLoad;
         isLoading = true;
-        
+
         /*LoadLevelAsync(levelToLoad);*/        //code for "real" loading screen (tbh, idk how it work)
     }
 
@@ -31,7 +31,7 @@ public class LoadingScreen : MonoBehaviour
         {
             if (loadingSlider.value != loadingSlider.maxValue)
             {
-                loadingSlider.value += Time.deltaTime/loadingTime;
+                loadingSlider.value += Time.deltaTime / loadingTime;
             }
             else
             {

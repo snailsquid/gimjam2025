@@ -5,8 +5,8 @@ using UnityEngine;
 public class SecretManager : MonoBehaviour
 {
     public static SecretManager Instance;
-    List<int> foundSecret = new List<int>();
-    List<string> logPopups = new List<string>{
+    public List<int> foundSecret = new List<int>() { 1 };
+    public List<string> logPopups = new List<string>{
         "LOGS UNLOCKED, CHECK THE MAIN MENU",
         "NEW LOGS ACQUIRED",
         "NEW LOGS ACQUIRED",
