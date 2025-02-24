@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 public class LogsManager : MonoBehaviour
 {
-    public static LogsManager instance {get; private set;}
+    public static LogsManager instance { get; private set; }
 
     private void Awake()
     {
@@ -28,7 +28,8 @@ public class LogsManager : MonoBehaviour
     [SerializeField] private GameObject logMenu;
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI description;
-    
+    [SerializeField] Sprite LogEnableNormal, LogEnableHover, LogDisableNormal, LogDisableHover;
+    [SerializeField] Button logMenuButton;
     void Start()
     {
         logs = new List<Log>
@@ -50,8 +51,26 @@ public class LogsManager : MonoBehaviour
         UpdateLogs();
     }
 
-    public void DisplayTitleContent(string title_)          
-    {                                                       
+    public void EnableButton(bool enable)
+    {
+        SpriteState spriteState = new SpriteState();
+
+        if (enable)
+        {
+            spriteState = new SpriteState { highlightedSprite = LogEnableHover };
+
+            logMenu.GetComponent<Image>().sprite = LogEnableNormal;
+        }
+        else
+        {
+            spriteState = new SpriteState { highlightedSprite = LogDisableHover };
+
+            logMenu.GetComponent<Image>().sprite = LogDisableNormal;
+        }
+        logMenuButton.spriteState = spriteState;
+    }
+    public void DisplayTitleContent(string title_)
+    {
         title.text = title_;
     }
     public void DisplayDescriptionContent(string description_)
@@ -61,18 +80,20 @@ public class LogsManager : MonoBehaviour
 
     public void UpdateLogs()
     {
-        foreach(Transform child in content)
+        foreach (Transform child in content)
         {
             Destroy(child.gameObject);
         }
-        foreach(Log log in logs)
+        foreach (Log log in logs)
         {
             GameObject newObject = Instantiate(logButton);
             newObject.transform.SetParent(content);
+            newObject.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
             TMP_Text text = newObject.transform.GetChild(0).GetComponent<TMP_Text>();
             text.text = log.title;
             Button button = newObject.GetComponent<Button>();
-            button.onClick.AddListener(()=>{
+            button.onClick.AddListener(() =>
+            {
                 DisplayTitleContent(log.title);
                 DisplayDescriptionContent(log.description);
             });
