@@ -1,1 +1,1 @@
-{"content":[{"key":"Test1(Clone)","keys":[]},{"key":"Test2(Clone)","keys":[{"point":"AttachmentPoint0","attached":"Test1(Clone)"}]}]}
+{"content":[{"key":"I1_1(Clone)","keys":[]},{"key":"I1_2(Clone)","keys":[{"point":"AttachmentPoint0","attached":"I1_1(Clone)"},{"point":"AttachmentPoint1","attached":"I1_3(Clone)"}]},{"key":"I1_3(Clone)","keys":[{"point":"AttachmentPoint1","attached":"I1_4(Clone)"}]},{"key":"I1_4(Clone)","keys":[]}]}
