@@ -4,8 +4,20 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Item
+  - Conveyor
+  - Holdable
+  - Attachment
+  - AttachmentPoint
+  - CompositeItem
   - Hand
   - Holdable
+  - Left
+  - Secret
+  - SubmitingPoint
+  - Preview
+  - Tutorial
+  - Submit
   layers:
   - Default
   - TransparentFX
@@ -13,9 +25,12 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Conveyor
+  - Item
+  - 3D layer
+  - Capsule
+  - TV
+  - Hand
   - 
   - 
   - 

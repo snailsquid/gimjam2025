@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public static MainMenuManager instance {get; private set;}
+    public static MainMenuManager instance { get; private set; }
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour
             instance = this;
         }
     }
-    
+
     public static bool playedForTheFirstTime = true;
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelSelection;
