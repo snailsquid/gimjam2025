@@ -486,6 +486,7 @@ MonoBehaviour:
   handAnimator: {fileID: 1749638946}
   hb: {fileID: 806070225}
   handType: 1
+  otherHand: {fileID: 1011510917}
   holdKey: 323
 --- !u!54 &232649267
 Rigidbody:
@@ -1043,7 +1044,9 @@ MonoBehaviour:
   - {fileID: 5328773262812955117, guid: 38eb212f97efe0c438bac11482877e7f, type: 3}
   rightConveyor:
   - {fileID: 3771953440265846088, guid: 0acc52edddd549842b14c654e7c4e990, type: 3}
-  levelJson: 1
+  conveyorLevel: 0
+  CompoundItem: {fileID: 0}
+  itemLevel: 0
 --- !u!1 &616733900
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,6 +1924,7 @@ MonoBehaviour:
   handAnimator: {fileID: 1489125523}
   hb: {fileID: 1630681447}
   handType: 0
+  otherHand: {fileID: 232649266}
   holdKey: 101
 --- !u!1 &1054379221
 GameObject:

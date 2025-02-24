@@ -56,7 +56,11 @@ public class Attachment : MonoBehaviour
             {
                 Debug.Log("Attaching " + name + " to " + attachment.name + ", with previous point : " + previousAttachmentPoint);
                 transform.SetParent(attachment.transform);
-                Release();
+                isHeld = false;
+                hand = null;
+                rigidBody.drag = 200;
+                rigidBody.angularDrag = 200;
+                rigidBody.useGravity = false;
                 joint.connectedBody = attachment.GetComponent<Rigidbody>();
             }
             AttachAttached(attachment, previousAttachmentPoint);
@@ -109,7 +113,6 @@ public class Attachment : MonoBehaviour
     {
         foreach (AttachmentPoint attachmentPoint in attachmentPoints)
         {
-            Debug.Log("Checking " + attachmentPoint.name + " on " + name);
             AttachmentPoint attachedPoint = attachmentPoint.attachedPoint;
             if (attachedPoint == null || attachmentPoint == previousAttachmentPoint) continue;
             attachedPoint.attachment.AttachTo(attachedTo, attachedPoint, depth);
@@ -128,18 +131,30 @@ public class Attachment : MonoBehaviour
             AttachTo(this);
         }
     }
+    public void RippleRelease(AttachmentPoint previousAttachmentPoint = null)
+    {
+        Release();
+        foreach (AttachmentPoint attachmentPoint in attachmentPoints)
+        {
+            if (attachmentPoint == previousAttachmentPoint) continue;
+            if (attachmentPoint.attachedPoint != null)
+            {
+                attachmentPoint.attachedPoint.attachment.RippleRelease(attachmentPoint.attachedPoint);
+            }
+        }
+    }
     public void Release()
     {
         Debug.Log("releasing " + name);
+        ReleaseHand();
+        rigidBody.drag = 0;
+        rigidBody.angularDrag = 0.05f;
+        rigidBody.useGravity = true;
+    }
+    public void ReleaseHand()
+    {
         isHeld = false;
         hand = null;
-        if (transform.parent == null || transform.parent.GetComponent<Attachment>() == null)
-        {
-
-            rigidBody.drag = 0;
-            rigidBody.angularDrag = 0.05f;
-            rigidBody.useGravity = true;
-        }
     }
     public void OutConveyor()
     {
@@ -172,7 +187,7 @@ public class AttachmentData
     public AttachmentData(Attachment attachment)
     {
         this.attachment = attachment;
-        key = attachment.uniqueKey;
+        key = attachment.name;
     }
     public Dictionary<string, List<(string, string)>> GetDictionaryKeys(Dictionary<string, List<(string, string)>> previousKeys = null, string previous = null)
     {
@@ -204,15 +219,62 @@ public class AttachmentData
         currentKeys = currentKeys.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
         return currentKeys;
     }
+    [Serializable]
+    public class Key
+    {
+        public string point;
+        public string attached;
+    }
+    [Serializable]
+    public class Keys
+    {
+        public string key;
+        public Key[] keys;
+    }
+    [Serializable]
+    public class KeysListContainer
+    {
+        public Keys[] content;
+    }
+    public KeysListContainer GetKeys()
+    {
+        Dictionary<string, List<(string, string)>> keys = GetDictionaryKeys();
+        Debug.Log("{\n" + string.Join(",\n", keys.Select(kv =>
+            $"  \"{kv.Key}\": [\n    {string.Join(",\n    ", kv.Value.Select(v => $"{{ \"point\": \"{v.Item1}\", \"attached\": \"{v.Item2}\" }}"))}\n  ]"
+        )) + "\n}");
+        List<Keys> keysList = new List<Keys>();
+        foreach (KeyValuePair<string, List<(string, string)>> currentKey in keys)
+        {
+            List<Key> keyList = new List<Key>();
+            foreach ((string, string) point in currentKey.Value)
+            {
+                Key key = new Key();
+                key.point = point.Item1;
+                key.attached = point.Item2;
+                keyList.Add(key);
+                Debug.Log(JsonUtility.ToJson(key));
+            }
+
+            Keys keysObject = new Keys();
+            keysObject.keys = keyList.ToArray();
+            keysObject.key = currentKey.Key;
+            keysList.Add(keysObject);
+            Debug.Log(JsonUtility.ToJson(keysObject));
+        }
+        KeysListContainer keysListContainer = new KeysListContainer();
+        Keys[] keysLists = keysList.ToArray();
+        keysListContainer.content = keysLists;
+        return keysListContainer;
+    }
     public bool IsEqual(AttachmentData other)
     {
         Dictionary<string, List<(string, string)>> keys = GetDictionaryKeys();
         Dictionary<string, List<(string, string)>> otherKeys = other.GetDictionaryKeys();
         Debug.Log("{\n" + string.Join(",\n", otherKeys.Select(kv =>
-            $"  \"{kv.Key}\": [\n    {string.Join(",\n    ", kv.Value.Select(v => $"{{ \"name\": \"{v.Item1}\", \"color\": \"{v.Item2}\" }}"))}\n  ]"
+            $"  \"{kv.Key}\": [\n    {string.Join(",\n    ", kv.Value.Select(v => $"{{ \"point\": \"{v.Item1}\", \"attached\": \"{v.Item2}\" }}"))}\n  ]"
         )) + "\n}");
         Debug.Log("{\n" + string.Join(",\n", keys.Select(kv =>
-            $"  \"{kv.Key}\": [\n    {string.Join(",\n    ", kv.Value.Select(v => $"{{ \"name\": \"{v.Item1}\", \"color\": \"{v.Item2}\" }}"))}\n  ]"
+            $"  \"{kv.Key}\": [\n    {string.Join(",\n    ", kv.Value.Select(v => $"{{ \"point\": \"{v.Item1}\", \"attached\": \"{v.Item2}\" }}"))}\n  ]"
         )) + "\n}");
         return AreDictionariesEqual(keys, otherKeys);
     }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Submit : MonoBehaviour
 {
-    public Attachment attachmentPrefab;
+    public GameObject attachmentPrefab;
     public bool checking;
     void Start()
     {
@@ -22,9 +22,8 @@ public class Submit : MonoBehaviour
         if (hitTransform.CompareTag("Holdable"))
         {
             Debug.Log(gameObject);
-            checking = attachment.EqualTo(attachmentPrefab);
+            checking = LevelManager.instance.IsSameWithLevel(attachment.GetData().GetKeys());
             Submiting(objects);
-
         }
     }
     void OnTriggerExit(Collider other)
