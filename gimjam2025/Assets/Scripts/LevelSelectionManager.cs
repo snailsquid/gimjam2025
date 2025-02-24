@@ -78,6 +78,7 @@ public class LevelSelectionManager : MonoBehaviour
     {
         GameObject newObject = Instantiate(levelButton);
         newObject.transform.SetParent(content);
+        newObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
         TMP_Text text = newObject.transform.GetChild(1).GetComponent<TMP_Text>();
         text.text = level.displayText;
