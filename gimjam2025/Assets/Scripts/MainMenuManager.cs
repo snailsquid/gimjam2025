@@ -35,7 +35,7 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             playedForTheFirstTime = false;
-            loadingScreen.LoadLevelBtn("Level 1"); //Change this when first level scene is ready
+            SceneManager.LoadScene("Level 1"); // scene can be changed to int later
         }
     }
 

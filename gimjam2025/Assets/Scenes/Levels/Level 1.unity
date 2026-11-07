@@ -180,12 +180,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42187d0c9bcf4c141a5ff2f3a43c9dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuMusic: 
-  gameplayMusic: 
+  menuMusic: menu
+  gameplayMusic: gameplay
   audioClips:
     _serializedList:
     - Key: fart
       Value: {fileID: 8300000, guid: 049e85f79de66004d8c62d868319c4c7, type: 3}
+    - Key: gameplay
+      Value: {fileID: 8300000, guid: 4e8fccd8aa5ed9e4f8c6b673723e323d, type: 3}
+    - Key: menu
+      Value: {fileID: 8300000, guid: df4018e31d0986f49aaa58627bd0305f, type: 3}
 --- !u!1 &84860013
 GameObject:
   m_ObjectHideFlags: 0

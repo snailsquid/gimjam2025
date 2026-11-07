@@ -103,7 +103,7 @@ public class ItemManager : MonoBehaviour
             {
                 itemName = item,
                 direction = direction,
-                prefab = PrefabUtility.LoadPrefabContents("Assets/Prefabs/Items/" + item + ".prefab"),
+                prefab = Resources.Load<GameObject>("Prefabs/Items/" + item + ".prefab"),
             };
             availableItems.Add(itemType);
             respawnQueue.AddLast(itemType);

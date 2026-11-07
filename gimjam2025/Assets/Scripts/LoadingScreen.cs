@@ -35,7 +35,6 @@ public class LoadingScreen : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadSceneAsync(scene); // scene can be changed to int later
             }
         }
     }
